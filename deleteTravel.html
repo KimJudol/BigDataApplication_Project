@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>Delete Travel</title>
+<meta charset="UTF-8">
+    <style>
+        select#city {
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+<form action="deleteTravel.php" method="POST">
+Select ID to Delete<br>
+<select name='travel_id' id='travel_id'>
+    <?php include("getTravelIDList.php"); ?>
+</select>
+<br><input type="submit" name="submit" value="Delete">
+
+</form>
+<?php include("getTravelList.php"); ?>
+</body>
+</html>
