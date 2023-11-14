@@ -51,7 +51,7 @@ $result = $conn->query($sql);
 <body>
 
     <div>
-        <a href="index.php" class="icon">🏠</a>
+        <a href="ranking.php" class="icon">🏠</a>
         <h1>Restaurant Ranking</h1>
     </div>
     <table>
