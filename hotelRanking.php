@@ -1,8 +1,7 @@
 <?php
 // 데이터베이스 연결 정보
- // MySQL 서버 주소
+$servername = "localhost";       // MySQL 서버 주소
 $username = "localhost";       // MySQL 사용자 이름
-      // MySQL 비밀번호
 $dbname = "test";    // 사용할 데이터베이스 이름
 
 // MySQL 데이터베이스에 연결
