@@ -42,7 +42,6 @@ CREATE TABLE IF NOT EXISTS hotel (
     city_id INT,
     hotel_name VARCHAR(50) NOT NULL,
     price INT,
-    temperature INT,
     accomodation_number INT,
     CONSTRAINT hotel_ibfk_1 FOREIGN KEY (city_id) REFERENCES city(city_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
