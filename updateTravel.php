@@ -100,4 +100,7 @@ if ($stmt = mysqli_prepare($mysqli, $query)) {
 mysqli_stmt_close($stmt);
 mysqli_close($mysqli);
 
+header("Location: myTravel.php");
+exit(); 
+
 ?>

@@ -9,7 +9,7 @@ if ($mysqli === false) {
 }
 
 // Query to retrieve travel IDs from the Travel table
-$query = "SELECT travel_id FROM travel";
+$query = "SELECT travel_id FROM myTravel ORDER BY travel_id";
 $res = mysqli_query($mysqli, $query);
 
 // Print travel IDs as options within a loop
