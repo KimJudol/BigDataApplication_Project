@@ -18,6 +18,12 @@ CREATE TABLE IF NOT EXISTS travel (
 	CONSTRAINT travel_ibfk_1 FOREIGN KEY (city_id) REFERENCES city(city_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- User Travel Table Create
+CREATE TABLE myTravel (
+    travel_id INT PRIMARY KEY,
+    FOREIGN KEY (travel_id) REFERENCES travel(travel_id)
+);
+
 -- City Table Create
 CREATE TABLE IF NOT EXISTS city (
 	city_id INT AUTO_INCREMENT PRIMARY KEY,
