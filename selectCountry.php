@@ -1,4 +1,5 @@
 //Purpose: Displays the exchange rate and language of the selected country
+
 <?php
 $hostname = "localhost:3306";
 $username = "team18";
@@ -44,4 +45,8 @@ if ($languageRow = mysqli_fetch_assoc($languageResult)) {
 } else {
     echo "국가를 선택하세요.";
 }
+
+
+
+
 
