@@ -4,26 +4,26 @@ $username = "root";
 $password = "";
 $databaseName = "team18";
 
-// 데이터베이스 연결
+// Database Connection
 $connect = mysqli_connect($hostname, $username, $password, $databaseName);
 
 if (!$connect) {
-    die("연결 실패: " . mysqli_connect_error());
+    die("Connection failed: " . mysqli_connect_error());
 }
 
-// 도시 또는 국가가 선택되었는지 확인
+// Check if a city or country is selected
 if (isset($_GET['city_name']) || isset($_GET['country_name'])) {
     if (isset($_GET['city_name'])) {
         $city_name = $_GET['city_name'];
 
-        // 선택된 도시의 city_id 찾기
+        // Find city_id for the selected city
         $findCityQuery = "SELECT city_id FROM city WHERE city_name = '$city_name'";
         $cityResult = mysqli_query($connect, $findCityQuery);
 
         if ($cityRow = mysqli_fetch_assoc($cityResult)) {
             $city_id = $cityRow['city_id'];
 
-            // 선택된 도시의 레스토랑 및 할인율 정보 가져오기
+            // Retrieve restaurant and discount information for the selected city
             $findRestaurantQuery = "SELECT r.restaurant_id, r.restaurant_name, r.cuisine_type, r.address, c.country_name, rd.restaurant_discount_rate 
                                     FROM restaurant r
                                     JOIN country c ON r.country_id = c.country_id
@@ -34,67 +34,68 @@ if (isset($_GET['city_name']) || isset($_GET['country_name'])) {
 
             if ($row = mysqli_fetch_assoc($result)) {
                 $countryName = $row['country_name'];
-                echo "<h1>$countryName, $city_name 식당 리스트</h1>";
+                echo "<h1>$countryName, $city_name Restaurant List</h1>";
 
-                // 레스토랑 정보 및 리뷰보기 버튼 표시
+                // Display restaurant information and a button to view reviews
                 echo "<table border='1' style='margin:auto;'>";
-                echo "<tr><th>식당 이름</th><th>음식 종류</th><th>주소</th><th>할인율</th><th>리뷰보기</th></tr>";
+                echo "<tr><th>Restaurant Name</th><th>Cuisine Type</th><th>Address</th><th>Discount Rate</th><th>View Reviews</th></tr>";
 
                 do {
                     echo "<tr><td>{$row['restaurant_name']}</td><td>{$row['cuisine_type']}</td><td>{$row['address']}</td><td>{$row['restaurant_discount_rate']}%</td>";
 
-                    // 리뷰보기 버튼 추가
-                    echo "<td><button onclick=\"showReviews({$row['restaurant_id']})\">리뷰보기</button></td></tr>";
+                    // Add a button to view reviews
+                    echo "<td><button onclick=\"showReviews({$row['restaurant_id']})\">View Reviews</button></td></tr>";
                 } while ($row = mysqli_fetch_assoc($result));
 
                 echo "</table>";
             } else {
-                echo "<h2>해당 도시의 식당 정보를 찾을 수 없습니다.</h2>";
+                echo "<h2>No restaurant information found for the selected city.</h2>";
             }
         } else {
-            echo "<h2>해당 도시의 정보를 찾을 수 없습니다.</h2>";
+            echo "<h2>No information found for the selected city.</h2>";
         }
     } elseif (isset($_GET['country_name'])) {
         $country_name = $_GET['country_name'];
 
-        // 선택된 국가의 레스토랑 정보 가져오기
-        $findCountryRestaurantQuery = "SELECT r.restaurant_id, r.restaurant_name, r.cuisine_type, r.address, c.country_name, rd.restaurant_discount_rate 
-                                    FROM restaurant r
-                                    JOIN country c ON r.country_id = c.country_id
-                                    LEFT JOIN restaurant_discount rd ON r.restaurant_id = rd.restaurant_id
-                                    WHERE c.country_name = '$country_name'";
+        // Retrieve restaurant information for the selected country
+        $findCountryRestaurantQuery = "SELECT r.restaurant_id, r.restaurant_name, r.cuisine_type, r.address, c.country_name, MAX(rd.restaurant_discount_rate) AS max_discount_rate
+                                FROM restaurant r
+                                JOIN country c ON r.country_id = c.country_id
+                                LEFT JOIN restaurant_discount rd ON r.restaurant_id = rd.restaurant_id
+                                WHERE c.country_name = '$country_name'
+                                GROUP BY r.restaurant_id, r.restaurant_name, r.cuisine_type, r.address, c.country_name";
 
         $countryResult = mysqli_query($connect, $findCountryRestaurantQuery);
 
         if ($countryRow = mysqli_fetch_assoc($countryResult)) {
-            echo "<h1>$country_name 식당 리스트</h1>";
+            echo "<h1>$country_name Restaurant List</h1>";
 
-            // 레스토랑 정보 및 리뷰보기 버튼 표시
+            // Display restaurant information and a button to view reviews
             echo "<table border='1' style='margin:auto;'>";
-            echo "<tr><th>식당 이름</th><th>음식 종류</th><th>주소</th><th>할인율</th><th>리뷰보기</th></tr>";
+            echo "<tr><th>Restaurant Name</th><th>Cuisine Type</th><th>Address</th><th>Discount Rate</th><th>View Reviews</th></tr>";
 
             do {
-                echo "<tr><td>{$countryRow['restaurant_name']}</td><td>{$countryRow['cuisine_type']}</td><td>{$countryRow['address']}</td><td>{$countryRow['restaurant_discount_rate']}%</td>";
-
-                // 리뷰보기 버튼 추가
-                echo "<td><button onclick=\"showReviews({$countryRow['restaurant_id']})\">리뷰보기</button></td></tr>";
+                echo "<tr><td>{$countryRow['restaurant_name']}</td><td>{$countryRow['cuisine_type']}</td><td>{$countryRow['address']}</td><td>{$countryRow['max_discount_rate']}%</td>";
+    
+                // Add a button to view reviews
+                echo "<td><button onclick=\"showReviews({$countryRow['restaurant_id']})\">View Reviews</button></td></tr>";
             } while ($countryRow = mysqli_fetch_assoc($countryResult));
 
             echo "</table>";
         } else {
-            echo "<h2>해당 국가의 식당 정보를 찾을 수 없습니다.</h2>";
+            echo "<h2>No restaurant information found for the selected country.</h2>";
         }
     }
 
-    // 데이터베이스 연결 종료
+    // Close the database connection
     mysqli_close($connect);
 } else {
-    // 국가 목록 가져오기
+    // Get the list of countries
     $query = "SELECT * FROM country";
     $result1 = mysqli_query($connect, $query);
 
     if (!$result1) {
-        die("쿼리 실행에 실패했습니다: " . mysqli_error($connect));
+        die("Query failed: " . mysqli_error($connect));
     }
 
     // HTML
@@ -116,7 +117,7 @@ if (isset($_GET['city_name']) || isset($_GET['country_name'])) {
             }
         </style>
         <script>
-            // 도시 목록 표시 함수
+            // Function to display city list
             function showCities() {
                 var selectedCountry = document.querySelector('#countryDrilldown').value;
                 var xhttp = new XMLHttpRequest();
@@ -128,12 +129,14 @@ if (isset($_GET['city_name']) || isset($_GET['country_name'])) {
                 xhttp.open("GET", "getCities.php?country_name=" + selectedCountry, true);
                 xhttp.send();
             }
+
+            // Function to display restaurant information for a selected country
             function showRestaurantInfo1() {
                 var selectedCountry = document.querySelector('#countryDrilldown').value;
 
                 // Check if either city or country is selected
                 if (selectedCountry) {
-                    // 도시 또는 국가 선택 시
+                    // When a city or country is selected
                     var xhttp = new XMLHttpRequest();
                     xhttp.onreadystatechange = function () {
                         if (this.readyState == 4 && this.status == 200) {
@@ -148,18 +151,19 @@ if (isset($_GET['city_name']) || isset($_GET['country_name'])) {
                     xhttp.open("GET", url, true);
                     xhttp.send();
                 } else {
-                    // 도시와 국가 모두 선택되지 않은 경우
-                    document.getElementById("restaurantInfo").innerHTML = "<h2>국가 또는 도시를 선택하세요.</h2>";
+                    // When neither a city nor a country is selected
+                    document.getElementById("restaurantInfo").innerHTML = "<h2>Please select a country or city.</h2>";
                 }
             }
-            // 레스토랑 정보 표시 함수
+
+            // Function to display restaurant information
             function showRestaurantInfo() {
                 var selectedCity = document.querySelector('#cityDrilldown').value;
                 var selectedCountry = document.querySelector('#countryDrilldown').value;
 
                 // Check if either city or country is selected
                 if (selectedCity || selectedCountry) {
-                    // 도시 또는 국가 선택 시
+                    // When a city or country is selected
                     var xhttp = new XMLHttpRequest();
                     xhttp.onreadystatechange = function () {
                         if (this.readyState == 4 && this.status == 200) {
@@ -178,12 +182,12 @@ if (isset($_GET['city_name']) || isset($_GET['country_name'])) {
                     xhttp.open("GET", url, true);
                     xhttp.send();
                 } else {
-                    // 도시와 국가 모두 선택되지 않은 경우
-                    document.getElementById("restaurantInfo").innerHTML = "<h2>국가 또는 도시를 선택하세요.</h2>";
+                    // When neither a city nor a country is selected
+                    document.getElementById("restaurantInfo").innerHTML = "<h2>Please select a country or city.</h2>";
                 }
             }
 
-            // 리뷰 표시 함수
+            // Function to display reviews
             function showReviews(restaurantId) {
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function () {
@@ -197,24 +201,24 @@ if (isset($_GET['city_name']) || isset($_GET['country_name'])) {
         </script>
     </head>
     <body>
-    <h1>도시 선택</h1>
-    <p>방문하려는 국가를 선택하세요:</p>
-    <!-- 국가 선택 드릴다운 -->
+    <h1>City Selection</h1>
+    <p>Select the country you want to visit:</p>
+    <!-- Country Selection Dropdown -->
     <select id="countryDrilldown" onchange="showCities()">
         <?php while ($row1 = mysqli_fetch_array($result1)):; ?>
             <option><?php echo $row1['country_name']; ?></option>
         <?php endwhile ?>
     </select>
-    <input type="button" value="제출" onclick="showRestaurantInfo1()">
+    <input type="button" value="Submit" onclick="showRestaurantInfo1()">
     
-    <p>방문하려는 도시를 선택하세요:</p>  
+    <p>Select the city you want to visit:</p>  
 
-    <!-- 도시 선택 드릴다운 -->
+    <!-- City Selection Dropdown -->
     <select id="cityDrilldown"></select>
 
-    <input type="button" value="제출" onclick="showRestaurantInfo()">
+    <input type="button" value="Submit" onclick="showRestaurantInfo()">
 
-    <!-- 레스토랑 정보 표시 -->
+    <!-- Display Restaurant Information -->
     <div id="restaurantInfo"></div>
     </body>
     </html>
