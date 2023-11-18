@@ -67,15 +67,15 @@ CREATE TABLE IF NOT EXISTS transportation
 -- Restaurant Table Create
 CREATE TABLE IF NOT EXISTS restaurant
 (
-     restaurant_id INT NOT NULL,
+     restaurant_id INT NOT NULL PRIMARY KEY,
      country_id INT NOT NULL,
      restaurant_name CHAR(50),
      cuisine_type CHAR(50),
 		 address CHAR(50),
-     PRIMARY KEY(restaurant_id),
+     city_id INT NOT NULL,
+     FOREIGN KEY (city_id) REFERENCES city(city_id),
      FOREIGN KEY(country_id) REFERENCES country(country_id)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
--- city_id에서 country_id로 변경했습니다
+);
 
 -- expense Table Create 
 CREATE TABLE IF NOT EXISTS expense (
