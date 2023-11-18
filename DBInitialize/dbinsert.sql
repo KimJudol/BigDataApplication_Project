@@ -672,4 +672,3 @@ INSERT INTO users (id, password) VALUES
 
 ALTER TABLE users
   ADD UNIQUE KEY ID (id) USING HASH;
-COMMIT;
