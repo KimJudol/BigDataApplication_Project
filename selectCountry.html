@@ -24,7 +24,7 @@
 </head>
 <body>
 
-    <form onsubmit="selectCountry(); return false;">
+    <form>
         <label for="country">Select Country:</label>
         <select name="country_name" id="country">
             <option value="" selected disabled>Select a country</option>
@@ -34,7 +34,7 @@
             <option value="UK">UK</option>
             <option value="Italia">Italia</option>
         </select>
-        <input type="submit" value="Submit">
+        <button type="button" onclick="selectCountry()">Submit</button>
     </form>
   
     <div id="countryInfo"></div>
@@ -68,7 +68,5 @@
             history.back();
         }
     </script>
-    
-
 </body>
 </html>
