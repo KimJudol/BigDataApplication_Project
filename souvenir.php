@@ -32,10 +32,11 @@ $result = $mysqli->query($sql);
 
 // Start HTML table
 echo "<table border='1'>";
+echo "<h1>Souvenir Sales</h1>";
 echo "<tr>
         <th>City Name</th>
         <th>Souvenir Name</th>
-        <th>Total Price</th>
+        <th>Total Sales(₩)</th>
       </tr>";
 
 // Output results
