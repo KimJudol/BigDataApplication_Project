@@ -4,6 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Select Country</title>
+
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
 
@@ -20,23 +37,27 @@
         <input type="submit" value="Submit">
     </form>
 
+    <div id="countryInfo"></div>
+
     <script>
         function selectCountry() {
             var country = document.getElementById("country");
             var country_name = country.options[country.selectedIndex].value;
 
+            var countryInfoDiv = document.getElementById("countryInfo");
+
             if (country_name == "France") {
-                alert("France's exchange rate is 1405.42 and language is 프랑스어");
+                countryInfoDiv.innerHTML = "<table><tr><th>France</th></tr><tr><td>Exchange rate: 1405.42</td></tr><tr><td>Language: 프랑스어</td></tr></table>";
             } else if (country_name == "Czech Republic") {
-                alert("Czech Republic's exchange rate is 57.58 and language is 체코어, 실레시아어");
+                countryInfoDiv.innerHTML = "<table><tr><th>Czech Republic</th></tr><tr><td>Exchange rate: 57.58</td></tr><tr><td>Language: 체코어, 실레시아어</td></tr></table>";
             } else if (country_name == "Swiss") {
-                alert("Swiss's exchange rate is 1456.09 and language is 독일어");
+                countryInfoDiv.innerHTML = "<table><tr><th>Swiss</th></tr><tr><td>Exchange rate: 1456.09</td></tr><tr><td>Language: 독일어</td></tr></table>";
             } else if (country_name == "UK") {
-                alert("UK's exchange rate is 1620.10 and language is 영어");
+                countryInfoDiv.innerHTML = "<table><tr><th>UK</th></tr><tr><td>Exchange rate: 1620.10</td></tr><tr><td>Language: 영어</td></tr></table>";
             } else if (country_name == "Italia") {
-                alert("Italia's exchange rate is 1405.42 and language is 이탈리아어");
+                countryInfoDiv.innerHTML = "<table><tr><th>Italia</th></tr><tr><td>Exchange rate: 1405.42</td></tr><tr><td>Language: 이탈리아어</td></tr></table>";
             } else {
-                alert("Please select a country");
+                countryInfoDiv.innerHTML = "<p>Please select a country</p>";
             }
         }
     </script>
