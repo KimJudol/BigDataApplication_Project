@@ -8,26 +8,39 @@
 <body>
 
 <form action="" method="get">
+    //select의 옵션은 'France','Czech Republic','Swiss','UK','Italia' 중 하나를 선택할 수 있음
     <label for="country">Select Country:</label>
     <select name="country_name" id="country">
-        <?php
-) {
-            echo "<option value=\"$country\">$country</option>";
-        }
-        ?>
+        <option value="France">France</option>
+        <option value="Czech Republic">Czech Republic</option>
+        <option value="Swiss">Swiss</option>
+        <option value="UK">UK</option>
+        <option value="Italia">Italia</option>
     </select>
-    <input type="submit" value="Show Info">
+    <input type="submit" value="Submit">
 </form>
 
-<script>
-    // display exchange rate and language information
-    var exchangeRate = "<?php echo isset($exchange_rate) ? $exchange_rate : ''; ?>";
-    var languageName = "<?php echo isset($language_name) ? $language_name : ''; ?>";
 
-    if (exchangeRate !== '' && languageName !== '') {
-        alert('Exchange Rate: ' + exchangeRate + ' Language: ' + languageName);
+<script>
+    function selectCountry(){
+        var country = document.getElementById("country");
+        var country_name = country.options[country.selectedIndex].value;
+        if(country_name == "France"){
+            alert("France's currency is Euro and language is French");
+        }else if(country_name == "Czech Republic"){
+            alert("Czech Republic's currency is Czech koruna and language is Czech");
+        }else if(country_name == "Swiss"){
+            alert("Swiss's currency is Swiss franc and language is German, French, Italian, Romansh");
+        }else if(country_name == "UK"){
+            alert("UK's currency is Pound sterling and language is English");
+        }else if(country_name == "Italia"){
+            alert("Italia's currency is Euro and language is Italian");
+        }else{
+            alert("Please select a country");
+        }
     }
+    selectCountry();
 </script>
 
-</body>
-</html>
+         
+
