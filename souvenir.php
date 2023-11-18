@@ -1,87 +1,65 @@
 <?php
-// MySQL 데이터베이스에 연결
+// Connect to the MySQL database
 $mysqli = mysqli_connect("localhost", "team18", "team18", "team18");
 
-// 연결 오류 확인
+// Check for connection errors
 if ($mysqli->connect_error) {
     die("Connection failed: " . $mysqli->connect_error);
 }
 
-// 검색어 처리
-$search = isset($_GET['search']) ? $_GET['search'] : '';
-$search = mysqli_real_escape_string($mysqli, $search);
+// Receive user input
+$city_name = isset($_POST['city']) ? $_POST['city'] : ''; // Use isset to check for the existence of the variable
 
-// 검색 결과를 가져오는 쿼리
-$sql = "SELECT city.city_name, souvenir.souvenir_id, souvenir.souvenir_name, 
-               SUM(souvenir.price) AS total_price
-        FROM souvenir
-        INNER JOIN city ON souvenir.city_id = city.city_id
-        WHERE city.city_name LIKE '%$search%'
-        GROUP BY city.city_name, souvenir.souvenir_id WITH ROLLUP";
+// Execute SQL query
+$sql = "
+    SELECT 
+        COALESCE(city.city_name, 'ALL') AS city_name,
+        souvenir.souvenir_name,
+        SUM(souvenir.price * souvenir.sale) AS total_price
+    FROM 
+        souvenir
+    JOIN 
+        city ON souvenir.city_id = city.city_id
+    WHERE 
+        city.city_name = '$city_name'
+    GROUP BY 
+        city.city_name, souvenir.souvenir_name WITH ROLLUP
+    HAVING 
+        city.city_name IS NOT NULL OR (city.city_name IS NULL AND souvenir.souvenir_name IS NOT NULL);
+";
 
-$res = mysqli_query($conn, $sql);
+$result = $mysqli->query($sql);
+
+// Start HTML table
+echo "<table border='1'>";
+echo "<tr>
+        <th>City Name</th>
+        <th>Souvenir Name</th>
+        <th>Total Price</th>
+      </tr>";
+
+// Output results
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        // Add a row
+        echo "<tr>
+                <td>" . $row["city_name"] . "</td>
+                <td>" . $row["souvenir_name"] . "</td>
+                <td>" . $row["total_price"] . "</td>
+              </tr>";
+    }
+} else {
+    echo "<tr><td colspan='3'>No results found.</td></tr>";
+}
+
+// End HTML table
+echo "</table>";
+
+
+echo "<br><br><a href='/team18/searchHotel.html' target='_blank'>";
+echo "<button>back</button>";
+echo "</a><br>";
+
+// Close MySQL connection
+$mysqli->close();
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search Souvenir</title>
-    <style>
-        body {
-            font-family: Consolas, monospace;
-            font-size: 12px;
-        }
-
-        table {
-            width: 100%;
-        }
-
-        th,
-        td {
-            padding: 10px;
-            border-bottom: 1px solid #dadada;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="head">검색결과 | <?= $search ?></div>
-
-    <table style="width:1000px;" class="middle">
-        <thead>
-            <tr align="center">
-                <th width="150">City</th>
-                <th width="70">Souvenir ID</th>
-                <th width="300">Souvenir Name</th>
-                <th width="120">Total Price</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            while ($row = mysqli_fetch_assoc($res)) {
-            ?>
-                <tr align="center">
-                    <td><?php echo $row['city_name']; ?></td>
-                    <td><?php echo $row['souvenir_id']; ?></td>
-                    <td><?php echo $row['souvenir_name']; ?></td>
-                    <td><?php echo isset($row['total_price']) ? $row['total_price'] : 'Grand Total'; ?></td>
-                </tr>
-            <?php
-            }
-            ?>
-        </tbody>
-    </table>
-
-    <div class="search">
-        <form method="get" action="searchSouvenir.php">
-            <label for="search_box">Search:</label>
-            <input type="text" id="search_box" name="search" placeholder="Enter city name" value="<?= $search ?>">
-            <input type="submit" value="Search">
-        </form>
-    </div>
-</body>
-
-</html>
