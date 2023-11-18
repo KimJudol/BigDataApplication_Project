@@ -24,7 +24,7 @@
 </head>
 <body>
 
-    <form>
+    <form id="countryForm">
         <label for="country">Select Country:</label>
         <select name="country_name" id="country">
             <option value="" selected disabled>Select a country</option>
@@ -40,6 +40,12 @@
     <div id="countryInfo"></div>
     
     <script>
+        // 폼 제출 이벤트 리스너 추가
+        document.getElementById("countryForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // 폼 제출 기본 동작 막기
+            selectCountry(); // 폼 제출 처리 함수 호출
+        });
+
         function selectCountry() {
             var country = document.getElementById("country");
             var country_name = country.options[country.selectedIndex].value;
