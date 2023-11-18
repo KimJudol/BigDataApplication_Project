@@ -71,8 +71,6 @@ $result = $mysqli->query($sql);
     // 데이터베이스 연결 종료
     $mysqli->close();
     ?>
-<br><a href="/team18/ranking.html" target="_blank">
-        <button>Back</button>
-    </a><br>
+<button onclick="history.back()">Back</button>
 </body>
 </html>
