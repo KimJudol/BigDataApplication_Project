@@ -6,7 +6,7 @@ USE team18;
 CREATE TABLE IF NOT EXISTS country (
 	country_id INT AUTO_INCREMENT PRIMARY KEY,
 	country_name VARCHAR(50)
-)
+);
 
 -- City Table Create
 CREATE TABLE IF NOT EXISTS city (
