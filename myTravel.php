@@ -6,22 +6,22 @@
 </head>
 <body>
 <h1>My Travel</h1>
-<a href="/team18/insertTravel.php" target="_blank">
+<a href="/team18/insertTravel.php" target="_self">
         <button>Insert Travel</button>
     </a><br>
-    <a href="/team18/updateTravel.php" target="_blank">
+    <a href="/team18/updateTravel.php" target="_self">
         <button>Update Travel</button>
     </a><br>
-    <a href="/team18/deleteTravel.php" target="_blank">
+    <a href="/team18/deleteTravel.php" target="_self">
         <button>Delete Travel</button>
     </a><br>
-    <a href="/team18/search.html" target="_blank">
+    <a href="/team18/search.html" target="_self">
         <button>Advanced Search</button>
     </a><br>
-    <a href="/team18/travel.php" target="_blank">
+    <a href="/team18/travel.php" target="_self">
         <button>Show All Travel</button>
     </a><br>
-    <a href="/team18/logout.html" target="_blank">
+    <a href="/team18/logout.html" target="_self">
         <button>Log out</button>
     </a><br>
                 
