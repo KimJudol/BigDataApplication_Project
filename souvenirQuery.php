@@ -57,7 +57,7 @@ if ($result->num_rows > 0) {
 echo "</table>";
 
 
-echo "<button onclick="history.back()">Back</button>";
+echo "<button onclick='history.back()'>Back</button>";
 
 // Close MySQL connection
 $mysqli->close();
