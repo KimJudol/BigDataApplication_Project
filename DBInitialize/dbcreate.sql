@@ -158,3 +158,8 @@ CREATE TABLE IF NOT EXISTS currency_exchange (
 	country_id INT,
 	FOREIGN KEY (country_id) REFERENCES country(country_id)
 );
+
+CREATE TABLE IF NOT EXISTS users (
+  id text NOT NULL,
+  password text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
