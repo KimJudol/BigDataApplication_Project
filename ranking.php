@@ -56,6 +56,8 @@
             }
         }
     </script>
-
+     <br><a href="/team18/search.html" target="_blank">
+        <button>Back</button>
+    </a><br>
 </body>
 </html>
