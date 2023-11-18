@@ -1,58 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>Delete Travel</title>
+<meta charset="UTF-8">
+    <style>
+        select#city {
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+<form action="deleteTravelQuery.php" method="POST">
+Select ID to Delete<br>
+<select name='travel_id' id='travel_id'>
+    <?php include("getTravelIDList.php"); ?>
+</select>
+<br><input type="submit" name="submit" value="Delete">
+
+</form>
+<a href="/team18/myTravel.php" target="_blank">
+    <button>Back</button>
+</a><br>
 <?php
 
 // Connect to the database
-$mysqli = mysqli_connect("localhost", "team18", "team18", "Team18");
+$mysqli = mysqli_connect("localhost", "team18", "team18", "team18");
 
 // Check if the connection was successful
 if ($mysqli === false) {
     die("ERROR: Could not connect. " . mysqli_connect_error());
 }
 
-// Retrieve the travel_id from the POST request
-$travel_id = $_POST["travel_id"];
+// Query to retrieve all columns from the Travel table
+$query = "SELECT travel_id FROM myTravel";
+$res = mysqli_query($mysqli, $query);
 
-// Delete from myTravel table query
-$myTravelQuery = "DELETE FROM myTravel WHERE travel_id = ?";
-$myTravelStmt = mysqli_prepare($mysqli, $myTravelQuery);
-mysqli_stmt_bind_param($myTravelStmt, "i", $travel_id);
+// Check if the query was successful
+if ($res) {
+    $travelIds = [];
+    while ($row = mysqli_fetch_assoc($res)) {
+        $travelIds[] = $row['travel_id'];
+    }
 
-// Execute the myTravel query
-if (mysqli_stmt_execute($myTravelStmt)) {
-    $affected_rows_myTravel = mysqli_stmt_affected_rows($myTravelStmt);
+    // Modified query to include travel_id
+    $travelDataQuery = "
+        SELECT travel_id, city.city_name, traveler_name, travel_start_date, travel_end_date
+        FROM travel
+        INNER JOIN city ON travel.city_id = city.city_id
+        WHERE travel_id IN (" . implode(',', $travelIds) . ")";
+    $travelDataResult = mysqli_query($mysqli, $travelDataQuery);
 
-    // Check if any rows were deleted from myTravel table
-    if ($affected_rows_myTravel > 0) {
-        // Delete from travel table query
-        $travelQuery = "DELETE FROM travel WHERE travel_id = ?";
-        $travelStmt = mysqli_prepare($mysqli, $travelQuery);
-        mysqli_stmt_bind_param($travelStmt, "i", $travel_id);
+    if ($travelDataResult) {
+        echo "<h2>My Travel List</h2>";
+        echo "<table border='1'>";
+        echo "<tr><th>Travel ID</th><th>City Name</th><th>Traveler Name</th><th>Travel Start Date</th><th>Travel End Date</th></tr>";
 
-        // Execute the travel query
-        if (mysqli_stmt_execute($travelStmt)) {
-            $affected_rows_travel = mysqli_stmt_affected_rows($travelStmt);
-
-            // Check if any rows were deleted from travel table
-            if ($affected_rows_travel > 0) {
-                echo "Records deleted successfully. Affected rows in myTravel: $affected_rows_myTravel, Affected rows in travel: $affected_rows_travel";
-            } else {
-                echo "No records deleted from travel table. Travel ID not found.";
-            }
-        } else {
-            echo "ERROR: Could not execute travel query. " . mysqli_stmt_error($travelStmt);
+        while ($travelRow = mysqli_fetch_assoc($travelDataResult)) {
+            echo "<tr>";
+            echo "<td>" . $travelRow['travel_id'] . "</td>";
+            echo "<td>" . $travelRow['city_name'] . "</td>";
+            echo "<td>" . $travelRow['traveler_name'] . "</td>";
+            echo "<td>" . $travelRow['travel_start_date'] . "</td>";
+            echo "<td>" . $travelRow['travel_end_date'] . "</td>";
+            echo "</tr>";
         }
 
-        mysqli_stmt_close($travelStmt);
-    } else {
-        echo "No records deleted from myTravel table. Travel ID not found.";
+        echo "</table>";
+        echo "<br><br>";
     }
 } else {
-    echo "ERROR: Could not execute myTravel query. " . mysqli_stmt_error($myTravelStmt);
+    // Output an error message if the query fails
+    printf("Could not retrieve records: %s \n", mysqli_error($mysqli));
 }
 
-mysqli_stmt_close($myTravelStmt);
+// Free up the result set
+mysqli_free_result($res);
+
+// Close the database connection
 mysqli_close($mysqli);
 
-header("Location: myTravel.php");
-exit(); 
-
 ?>
+
+
+</body>
+</html>

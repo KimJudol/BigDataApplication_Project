@@ -1,106 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>Update Travel</title>
+<meta charset="UTF-8">
+    <style>
+        select#city {
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+<form action="updateTravelQuery.php" method="POST">
+Select City<br>
+<select name='city' id='city'>
+    <?php include("getCityList.php"); ?>
+</select>
+<br><br>Traveler name<br>
+<input type="text" name="travelerName" size="50">
+<br><br>Travel Start Date<br>
+<input type="date" name="startDate" size="50">
+<br><br>Travel End Date<br>
+<input type="date" name="endDate" size="50">
+<br><br><input type="submit" name="submit" value="Update"> 
+</form>
+<a href="/team18/myTravel.php" target="_blank">
+    <button>Back</button>
+</a><br>
+
 <?php
 
 // Connect to the database
-$mysqli = mysqli_connect("localhost", "team18", "team18", "Team18");
+$mysqli = mysqli_connect("localhost", "team18", "team18", "team18");
 
 // Check if the connection was successful
 if ($mysqli === false) {
     die("ERROR: Could not connect. " . mysqli_connect_error());
 }
 
-// Retrieve the city_id based on the provided city name from the POST request
-$city_name = $_POST["city"];
-$getIdQuery = "SELECT city_id FROM city WHERE city_name = ?";
+// Query to retrieve all columns from the Travel table
+$query = "SELECT travel_id FROM myTravel";
+$res = mysqli_query($mysqli, $query);
 
-// Prepare the SQL query to retrieve city_id
-if ($stmt = mysqli_prepare($mysqli, $getIdQuery)) {
-    // Bind the parameter for the city name
-    mysqli_stmt_bind_param($stmt, "s", $city_name);
+// Check if the query was successful
+if ($res) {
+    $travelIds = [];
+    while ($row = mysqli_fetch_assoc($res)) {
+        $travelIds[] = $row['travel_id'];
+    }
 
-    // Execute the query
-    if (mysqli_stmt_execute($stmt)) {
-        // Bind the result
-        mysqli_stmt_bind_result($stmt, $find_id);
+    // Modified query to include city_name
+    $travelDataQuery = "
+        SELECT city.city_name, traveler_name, travel_start_date, travel_end_date
+        FROM travel
+        INNER JOIN city ON travel.city_id = city.city_id
+        WHERE travel_id IN (" . implode(',', $travelIds) . ")";
+    $travelDataResult = mysqli_query($mysqli, $travelDataQuery);
 
-        // Fetch the result
-        if (mysqli_stmt_fetch($stmt)) {
-            // Save the city_id value to a variable
-            $city_id = $find_id;
-        } else {
-            echo "City not found.";
-            mysqli_stmt_close($stmt);
-            mysqli_close($mysqli);
+    if ($travelDataResult) {
+        echo "<h2>My Travel List</h2>";
+        echo "<table border='1'>";
+        echo "<tr><th>City Name</th><th>Traveler Name</th><th>Travel Start Date</th><th>Travel End Date</th></tr>";
+
+        while ($travelRow = mysqli_fetch_assoc($travelDataResult)) {
+            echo "<tr>";
+            echo "<td>" . $travelRow['city_name'] . "</td>";
+            echo "<td>" . $travelRow['traveler_name'] . "</td>";
+            echo "<td>" . $travelRow['travel_start_date'] . "</td>";
+            echo "<td>" . $travelRow['travel_end_date'] . "</td>";
+            echo "</tr>";
         }
-    } else {
-        echo "Error executing the query: " . mysqli_error($mysqli);
-    }
 
-    mysqli_stmt_close($stmt);
-} else {
-    echo "Error preparing the query: " . mysqli_error($mysqli);
-}
-
-// Check if the traveler exists in the travel table
-$traveler_name = $_POST["travelerName"];
-$checkTravelerQuery = "SELECT COUNT(*) FROM travel WHERE traveler_name = ?";
-
-if ($stmt = mysqli_prepare($mysqli, $checkTravelerQuery)) {
-    mysqli_stmt_bind_param($stmt, "s", $traveler_name);
-
-    // Execute the query
-    if (mysqli_stmt_execute($stmt)) {
-        // Bind the result
-        mysqli_stmt_bind_result($stmt, $count);
-
-        // Fetch the result
-        if (mysqli_stmt_fetch($stmt)) {
-            if ($count > 0) {
-                // Traveler exists, continue with the update
-            } else {
-                echo "Traveler not found.";
-                mysqli_stmt_close($stmt);
-                mysqli_close($mysqli);
-            }
-        } else {
-            echo "Error fetching the result: " . mysqli_error($mysqli);
-        }
-    } else {
-        echo "Error executing the query: " . mysqli_error($mysqli);
-    }
-
-    mysqli_stmt_close($stmt);
-} else {
-    echo "Error preparing the query: " . mysqli_error($mysqli);
-}
-
-// Update travel record query
-$query = "UPDATE travel SET city_id=?, travel_start_date=?, travel_end_date=? WHERE traveler_name=?";
-
-// Prepare the statement
-if ($stmt = mysqli_prepare($mysqli, $query)) {
-    // Bind parameters for the prepared statement
-    mysqli_stmt_bind_param($stmt, "isss", $city, $travel_start_date, $travel_end_date, $traveler_name);
-
-    // Set parameter values
-    $city = $city_id;
-    $traveler_name = $_POST['travelerName'];
-    $travel_start_date = $_POST['startDate'];
-    $travel_end_date = $_POST['endDate'];
-
-    // Execute the prepared statement
-    if (mysqli_stmt_execute($stmt)) {
-        echo "Records updated successfully.";
-    } else {
-        echo "ERROR: Could not execute query: $sql. " . mysqli_error($mysqli);
+        echo "</table>";
+        echo "<br><br>";
     }
 } else {
-    echo "ERROR: Could not prepare query: $sql. " . mysqli_error($mysqli);
+    // Output an error message if the query fails
+    printf("Could not retrieve records: %s \n", mysqli_error($mysqli));
 }
 
-mysqli_stmt_close($stmt);
+// Free up the result set
+mysqli_free_result($res);
+
+// Close the database connection
 mysqli_close($mysqli);
 
-header("Location: myTravel.php");
-exit(); 
-
 ?>
+</body>
+</body>
+</html>
