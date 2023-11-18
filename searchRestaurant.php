@@ -1,226 +1,119 @@
 <?php
-// Database Connection
-$mysqli = mysqli_connect("localhost", "team18", "team18", "team18");
+$servername = "localhost:3306";
+$username = "root";
+$password = "";
+$dbname = "team18";  
 
-if (!$mysqli) {
-    die("Connection failed: " . mysqli_connect_error());
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
-// Check if a city or country is selected
-if (isset($_GET['city_name']) || isset($_GET['country_name'])) {
-    if (isset($_GET['city_name'])) {
-        $city_name = $_GET['city_name'];
+// Fetch countries from the database
+$countries_query = "SELECT country_id, country_name FROM country";
+$countries_result = $conn->query($countries_query);
 
-        // Find city_id for the selected city
-        $findCityQuery = "SELECT city_id FROM city WHERE city_name = '$city_name'";
-        $cityResult = mysqli_query($mysqli, $findCityQuery);
+// Check if there are countries
+if ($countries_result->num_rows > 0) {
+    echo "<form method='post' action=''>"; // Start form
 
-        if ($cityRow = mysqli_fetch_assoc($cityResult)) {
-            $city_id = $cityRow['city_id'];
+    // Country drill down
+    echo "Select a country: <select name='selected_country' onchange='this.form.submit()'>";
+    echo "<option value=''>-- Select Country --</option>"; // Default option
 
-            // Retrieve restaurant and discount information for the selected city
-            $findRestaurantQuery = "SELECT r.restaurant_id, r.restaurant_name, r.cuisine_type, r.address, c.country_name, rd.restaurant_discount_rate 
-                                    FROM restaurant r
-                                    JOIN country c ON r.country_id = c.country_id
-                                    LEFT JOIN restaurant_discount rd ON r.restaurant_id = rd.restaurant_id
-                                    WHERE r.city_id = $city_id";
+    // Output options for the select box
+    while ($country_row = $countries_result->fetch_assoc()) {
+        $country_id = $country_row["country_id"];
+        $country_name = $country_row["country_name"];
+        $selected = ($_POST["selected_country"] == $country_id) ? "selected" : "";
+        echo "<option value='$country_id' $selected>$country_name</option>";
+    }
 
-            $result = mysqli_query($mysqli, $findRestaurantQuery);
+    echo "</select>";
 
-            if ($row = mysqli_fetch_assoc($result)) {
-                $countryName = $row['country_name'];
-                echo "<h1>$countryName, $city_name Restaurant List</h1>";
+    // City drill-down
+    if (!empty($_POST["selected_country"])) {
+        $selected_country_id = $_POST["selected_country"];
 
-                // Display restaurant information and a button to view reviews
-                echo "<table border='1' style='margin:auto;'>";
-                echo "<tr><th>Restaurant Name</th><th>Cuisine Type</th><th>Address</th><th>Discount Rate</th><th>View Reviews</th></tr>";
+        // Fetch cities based on the selected country
+        $cities_query = "SELECT city_id, city_name FROM city WHERE country_id = $selected_country_id";
+        $cities_result = $conn->query($cities_query);
 
-                do {
-                    echo "<tr><td>{$row['restaurant_name']}</td><td>{$row['cuisine_type']}</td><td>{$row['address']}</td><td>{$row['restaurant_discount_rate']}%</td>";
+        // Check if there are cities
+        if ($cities_result->num_rows > 0) {
+            echo "Select a city: <select name='selected_city'>";
+            echo "<option value=''>-- Select City --</option>"; // Default option
 
-                    // Add a button to view reviews
-                    echo "<td><button onclick=\"showReviews({$row['restaurant_id']})\">View Reviews</button></td></tr>";
-                } while ($row = mysqli_fetch_assoc($result));
-
-                echo "</table>";
-            } else {
-                echo "<h2>No restaurant information found for the selected city.</h2>";
+            // Output options for the city drill down
+            while ($city_row = $cities_result->fetch_assoc()) {
+                $city_id = $city_row["city_id"];
+                $city_name = $city_row["city_name"];
+                $selected = (isset($_POST["selected_city"]) && $_POST["selected_city"] == $city_id) ? "selected" : "";
+                echo "<option value='$city_id' $selected>$city_name</option>";
             }
-        } else {
-            echo "<h2>No information found for the selected city.</h2>";
+
+            echo "</select>";
         }
-    } elseif (isset($_GET['country_name'])) {
-        $country_name = $_GET['country_name'];
+    } else {
+        // If country is not selected, set a default value for city dropdown
+        echo "Select a city: <select name='selected_city' disabled>";
+        echo "<option value=''>-- Select Country First --</option>";
+        echo "</select>";
+    }
 
-        // Retrieve restaurant information for the selected country
-        $findCountryRestaurantQuery = "SELECT r.restaurant_id, r.restaurant_name, r.cuisine_type, r.address, c.country_name, MAX(rd.restaurant_discount_rate) AS max_discount_rate
-                                FROM restaurant r
-                                JOIN country c ON r.country_id = c.country_id
-                                LEFT JOIN restaurant_discount rd ON r.restaurant_id = rd.restaurant_id
-                                WHERE c.country_name = '$country_name'
-                                GROUP BY r.restaurant_id, r.restaurant_name, r.cuisine_type, r.address, c.country_name";
+    echo "<input type='submit' value='Submit'>";
+    echo "</form><br>";
 
-        $countryResult = mysqli_query($mysqli, $findCountryRestaurantQuery);
+    // Check if the form is submitted
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["selected_country"])) {
+        // Get the selected country and city IDs from the form submission
+        $selected_country_id = $_POST["selected_country"];
+        $selected_city_id = isset($_POST["selected_city"]) ? $_POST["selected_city"] : null;
 
-        if ($countryRow = mysqli_fetch_assoc($countryResult)) {
-            echo "<h1>$country_name Restaurant List</h1>";
+        // Query to retrieve information from restaurant, restaurant_discount, and restaurant_rating tables
+        $query = "
+            SELECT r.restaurant_name, r.cuisine_type, r.address, rd.restaurant_discount_rate, rr.restaurant_review
+            FROM restaurant r
+            LEFT JOIN restaurant_discount rd ON r.restaurant_id = rd.restaurant_id
+            LEFT JOIN restaurant_rating rr ON r.restaurant_id = rr.restaurant_id
+            WHERE r.country_id = $selected_country_id
+        ";
 
-            // Display restaurant information and a button to view reviews
-            echo "<table border='1' style='margin:auto;'>";
-            echo "<tr><th>Restaurant Name</th><th>Cuisine Type</th><th>Address</th><th>Discount Rate</th><th>View Reviews</th></tr>";
+        // Include the city condition if a specific city is selected
+        if ($selected_city_id !== null) {
+            $query .= " AND r.city_id = $selected_city_id";
+        }
 
-            do {
-                echo "<tr><td>{$countryRow['restaurant_name']}</td><td>{$countryRow['cuisine_type']}</td><td>{$countryRow['address']}</td><td>{$countryRow['max_discount_rate']}%</td>";
-    
-                // Add a button to view reviews
-                echo "<td><button onclick=\"showReviews({$countryRow['restaurant_id']})\">View Reviews</button></td></tr>";
-            } while ($countryRow = mysqli_fetch_assoc($countryResult));
+        $result = $conn->query($query);
+
+        if ($result->num_rows > 0) {
+            // Output data in a table
+            echo "<table border='1'>";
+            echo "<tr><th>Restaurant Name</th><th>Cuisine Type</th><th>Address</th><th>Discount Rate</th><th>Review</th></tr>";
+
+            // Output data of each row
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>" . $row["restaurant_name"] . "</td>";
+                echo "<td>" . $row["cuisine_type"] . "</td>";
+                echo "<td>" . $row["address"] . "</td>";
+                echo "<td>" . $row["restaurant_discount_rate"] . "</td>";
+                echo "<td>" . $row["restaurant_review"] . "</td>";
+                echo "</tr>";
+            }
 
             echo "</table>";
         } else {
-            echo "<h2>No restaurant information found for the selected country.</h2>";
+            echo "No results found for the selected country and city.";
         }
     }
-
-    // Close the database connection
-    mysqli_close($mysqli);
 } else {
-    // Get the list of countries
-    $query = "SELECT * FROM country";
-    $result1 = mysqli_query($mysqli, $query);
-
-    if (!$result1) {
-        die("Query failed: " . mysqli_error($mysqli));
-    }
-
-    // HTML
-    ?>
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset="utf-8">
-        <style>
-            select {
-                width: 200px;
-                height: 30px;
-                font-size: 16px;
-            }
-
-            #restaurantInfo {
-                text-align: center;
-                margin-top: 20px;
-            }
-        </style>
-        <script>
-            // Function to display city list
-            function showCities() {
-                var selectedCountry = document.querySelector('#countryDrilldown').value;
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        document.getElementById("cityDrilldown").innerHTML = this.responseText;
-                    }
-                };
-                xhttp.open("GET", "getCities.php?country_name=" + selectedCountry, true);
-                xhttp.send();
-            }
-
-            // Function to display restaurant information for a selected country
-            function showRestaurantInfo1() {
-                var selectedCountry = document.querySelector('#countryDrilldown').value;
-
-                // Check if either city or country is selected
-                if (selectedCountry) {
-                    // When a city or country is selected
-                    var xhttp = new XMLHttpRequest();
-                    xhttp.onreadystatechange = function () {
-                        if (this.readyState == 4 && this.status == 200) {
-                            document.getElementById("restaurantInfo").innerHTML = this.responseText;
-                        }
-                    };
-
-                    // Adjust the URL based on the selection
-                    var url;
-                    url = "searchRestaurant.php?country_name=" + selectedCountry;
-
-                    xhttp.open("GET", url, true);
-                    xhttp.send();
-                } else {
-                    // When neither a city nor a country is selected
-                    document.getElementById("restaurantInfo").innerHTML = "<h2>Please select a country or city.</h2>";
-                }
-            }
-
-            // Function to display restaurant information
-            function showRestaurantInfo() {
-                var selectedCity = document.querySelector('#cityDrilldown').value;
-                var selectedCountry = document.querySelector('#countryDrilldown').value;
-
-                // Check if either city or country is selected
-                if (selectedCity || selectedCountry) {
-                    // When a city or country is selected
-                    var xhttp = new XMLHttpRequest();
-                    xhttp.onreadystatechange = function () {
-                        if (this.readyState == 4 && this.status == 200) {
-                            document.getElementById("restaurantInfo").innerHTML = this.responseText;
-                        }
-                    };
-
-                    // Adjust the URL based on the selection
-                    var url;
-                    if (selectedCity) {
-                        url = "searchRestaurant.php?city_name=" + selectedCity;
-                    } else {
-                        url = "searchRestaurant.php?country_name=" + selectedCountry;
-                    }
-
-                    xhttp.open("GET", url, true);
-                    xhttp.send();
-                } else {
-                    // When neither a city nor a country is selected
-                    document.getElementById("restaurantInfo").innerHTML = "<h2>Please select a country or city.</h2>";
-                }
-            }
-
-            // Function to display reviews
-            function showReviews(restaurantId) {
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        document.getElementById("restaurantInfo").innerHTML = this.responseText;
-                    }
-                };
-                xhttp.open("GET", "getRestaurantReviews.php?restaurant_id=" + restaurantId, true);
-                xhttp.send();
-            }
-        </script>
-    </head>
-    <body>
-    <h1>City Selection</h1>
-    <p>Select the country you want to visit:</p>
-    <!-- Country Selection Dropdown -->
-    <select id="countryDrilldown" onchange="showCities()">
-        <?php while ($row1 = mysqli_fetch_array($result1)):; ?>
-            <option><?php echo $row1['country_name']; ?></option>
-        <?php endwhile ?>
-    </select>
-    <input type="button" value="Submit" onclick="showRestaurantInfo1()">
-    
-    <p>Select the city you want to visit:</p>  
-
-    <!-- City Selection Dropdown -->
-    <select id="cityDrilldown"></select>
-
-    <input type="button" value="Submit" onclick="showRestaurantInfo()">
-
-    <br><br><a href="/team18/getRestaurantReviews.php" target="_blank">
-        <button>Restaurant Review</button>
-    </a><br>
-
-    <!-- Display Restaurant Information -->
-    <div id="restaurantInfo"></div>
-    </body>
-    </html>
-    <?php
+    echo "No countries found.";
 }
+
+// Close connection
+$conn->close();
 ?>
