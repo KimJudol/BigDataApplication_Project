@@ -5,7 +5,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // MySQL 데이터베이스에 연결
-$mysqli = mysqli_connect("localhost", "team18" "team18", "team18");
+$mysqli = mysqli_connect("localhost", "team18","team18", "team18");
 
 // 연결 오류 확인
 if ($mysqli->connect_error) {
