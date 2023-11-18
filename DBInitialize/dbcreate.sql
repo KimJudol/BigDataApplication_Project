@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS travel (
 
 -- User Travel Table Create
 CREATE TABLE myTravel (
-    travel_id INT PRIMARY KEY,
+    travel_id INT,
     FOREIGN KEY (travel_id) REFERENCES travel(travel_id)
 );
 

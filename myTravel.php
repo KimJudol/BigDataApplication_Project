@@ -16,7 +16,7 @@
         <button>Delete Travel</button>
     </a><br>
     <a href="/team18/search.html" target="_blank">
-        <button>Search</button>
+        <button>Advanced Search</button>
     </a><br>
     <a href="/team18/travel.html" target="_blank">
         <button>Show All Travel</button>
