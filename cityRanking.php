@@ -26,7 +26,6 @@ $result = $mysqli->query($sql);
 <body>
 
     <div>
-        <a href="./ranking.php" class="icon">🏠</a>
         <h1>City Ranking</h1>
     </div>
     <table>
