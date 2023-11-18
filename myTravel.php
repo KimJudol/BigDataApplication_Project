@@ -24,9 +24,6 @@
     <a href="/team18/logout.html" target="_blank">
         <button>Log out</button>
     </a><br>
-
-    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-    <input type="submit" name="logout" value="Logout"></form>
                 
 <?php
 
