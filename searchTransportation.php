@@ -117,8 +117,7 @@ if (isset($_GET['city_name'])) {
 
     <!-- Container to display transportation information -->
     <div id="transportationInfo"></div>
-        <br><a href="/team18/search.html">
-        <button>Back</button>
+       <button onclick="history.back()">Back</button>
     </a><br>
     </body>
     </html>
