@@ -8,6 +8,14 @@ CREATE TABLE IF NOT EXISTS country (
 	country_name VARCHAR(50)
 )
 
+-- City Table Create
+CREATE TABLE IF NOT EXISTS city (
+	city_id INT AUTO_INCREMENT PRIMARY KEY,
+	city_name VARCHAR(50), 
+	country_id INT,
+	CONSTRAINT city_ibfk_1 FOREIGN KEY (country_id) REFERENCES country(country_id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 -- Travel Table Create
 CREATE TABLE IF NOT EXISTS travel (
 	travel_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -24,13 +32,7 @@ CREATE TABLE myTravel (
     FOREIGN KEY (travel_id) REFERENCES travel(travel_id)
 );
 
--- City Table Create
-CREATE TABLE IF NOT EXISTS city (
-	city_id INT AUTO_INCREMENT PRIMARY KEY,
-	city_name VARCHAR(50), 
-	country_id INT,
-	CONSTRAINT city_ibfk_1 FOREIGN KEY (country_id) REFERENCES country(country_id)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 
 -- Weather Table Create
 CREATE TABLE IF NOT EXISTS weather (
