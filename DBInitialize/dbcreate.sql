@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS restaurant
      country_id INT NOT NULL,
      restaurant_name CHAR(50),
      cuisine_type CHAR(50),
-		 address CHAR(50),
+     address CHAR(80),
      city_id INT NOT NULL,
      FOREIGN KEY (city_id) REFERENCES city(city_id),
      FOREIGN KEY(country_id) REFERENCES country(country_id)
