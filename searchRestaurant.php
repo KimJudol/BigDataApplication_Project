@@ -110,7 +110,15 @@ if ($countries_result->num_rows > 0) {
             echo "No results found for the selected country and city.";
         }
     }
-    echo "<br><a href='/team18/search.html'><button>Back</button></a>";
+    echo "<br><button onclick='goBack()'>Back</button>";
+
+    // Add the following JavaScript function at the end of your PHP code
+    echo "<script>
+        function goBack() {
+            window.location.href = '/team18/search.html';
+        }
+    </script>";
+
 } else {
     echo "No countries found.";
 }
