@@ -24,7 +24,7 @@
 </head>
 <body>
 
-    <form action="" method="get" onsubmit="selectCountry(); return false;">
+    <form onsubmit="selectCountry(); return false;">
         <label for="country">Select Country:</label>
         <select name="country_name" id="country">
             <option value="" selected disabled>Select a country</option>
@@ -36,19 +36,7 @@
         </select>
         <input type="submit" value="Submit">
     </form>
-
-    <div>
-        <label for="country">Select a country:</label>
-        <select id="country" onchange="selectCountry()">
-            <!-- Populate this dropdown with country options from your database -->
-            <option value="France">France</option>
-            <option value="Czech Republic">Czech Republic</option>
-            <option value="Swiss">Swiss</option>
-            <option value="UK">UK</option>
-            <option value="Italia">Italia</option>
-        </select>
-    </div>
-    
+  
     <div id="countryInfo"></div>
     
     <script>
@@ -84,5 +72,3 @@
 
 </body>
 </html>
-
-
