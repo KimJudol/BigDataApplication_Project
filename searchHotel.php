@@ -22,7 +22,6 @@
             h.price, 
             h.accomodation_number, 
             hd.hotel_discount_id, 
-            hd.hotel_discount_available, 
             hd.hotel_discount_rate, 
             hd.hotel_discount_period
         FROM 
@@ -45,7 +44,6 @@
             <th>Price</th>
             <th>Accommodation Number</th>
             <th>Discount ID</th>
-            <th>Discount Available</th>
             <th>Discount Rate</th>
             <th>Discount Period</th>
         </tr>";
@@ -60,7 +58,6 @@
                     <td>" . $row["price"] . "</td>
                     <td>" . $row["accomodation_number"] . "</td>
                     <td>" . $row["hotel_discount_id"] . "</td>
-                    <td>" . $row["hotel_discount_available"] . "</td>
                     <td>" . $row["hotel_discount_rate"] . "</td>
                     <td>" . $row["hotel_discount_period"] . "</td>
                 </tr>";
