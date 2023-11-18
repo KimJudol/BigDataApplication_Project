@@ -31,7 +31,7 @@
 
     <div>
         <a href="#" class="icon">🏠</a>
-        <h1 class="title">Rating</h1>
+        <h1 class="title">Ranking</h1>
     </div>
 
     <div class="buttons">
@@ -43,13 +43,13 @@
     <script>
         function navigate(category) {
             if (category === 'city') {
-                window.location.href = 'city_rating.php';
+                window.location.href = 'cityRanking.php';
             }
             else if (category === 'restaurant') {
-                window.location.href = 'restaurant_rating.php';
+                window.location.href = 'restaurantRanking.php';
             }
             else if (category === 'hotel') {
-                window.location.href = 'hotel_rating.php';
+                window.location.href = 'hotelRanking.php';
             }
             else {
                 // 다른 카테고리의 동작을 추가할 수 있습니다.
