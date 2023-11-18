@@ -30,7 +30,6 @@
 <body>
 
     <div>
-        <a href="#" class="icon">🏠</a>
         <h1 class="title">Ranking</h1>
     </div>
 
