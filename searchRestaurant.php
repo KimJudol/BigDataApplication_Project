@@ -105,14 +105,12 @@ if ($countries_result->num_rows > 0) {
                 echo "<td>" . $row["restaurant_review"] . "</td>";
                 echo "</tr>";
             }
-
             echo "</table>";
-
-            echo "<br><a href='/team18/search.html'><button>Back</button></a>";
         } else {
             echo "No results found for the selected country and city.";
         }
     }
+    echo "<br><a href='/team18/search.html'><button>Back</button></a>";
 } else {
     echo "No countries found.";
 }
