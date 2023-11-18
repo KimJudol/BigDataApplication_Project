@@ -6,7 +6,15 @@ USE team18;
 CREATE TABLE IF NOT EXISTS country (
 	country_id INT AUTO_INCREMENT PRIMARY KEY,
 	country_name VARCHAR(50)
-)
+);
+
+-- City Table Create
+CREATE TABLE IF NOT EXISTS city (
+	city_id INT AUTO_INCREMENT PRIMARY KEY,
+	city_name VARCHAR(50), 
+	country_id INT,
+	CONSTRAINT city_ibfk_1 FOREIGN KEY (country_id) REFERENCES country(country_id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Travel Table Create
 CREATE TABLE IF NOT EXISTS travel (
@@ -18,13 +26,13 @@ CREATE TABLE IF NOT EXISTS travel (
 	CONSTRAINT travel_ibfk_1 FOREIGN KEY (city_id) REFERENCES city(city_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- City Table Create
-CREATE TABLE IF NOT EXISTS city (
-	city_id INT AUTO_INCREMENT PRIMARY KEY,
-	city_name VARCHAR(50), 
-	country_id INT,
-	CONSTRAINT city_ibfk_1 FOREIGN KEY (country_id) REFERENCES country(country_id)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+-- User Travel Table Create
+CREATE TABLE myTravel (
+    travel_id INT PRIMARY KEY,
+    FOREIGN KEY (travel_id) REFERENCES travel(travel_id)
+);
+
+
 
 -- Weather Table Create
 CREATE TABLE IF NOT EXISTS weather (
@@ -33,7 +41,7 @@ CREATE TABLE IF NOT EXISTS weather (
     date DATE NOT NULL,
     temperature INT,
     conditions VARCHAR(50),
-    CONSTRAINT weather_ibfk_1FOREIGN KEY (city_id) REFERENCES city(city_id)
+    CONSTRAINT weather_ibfk_1 FOREIGN KEY (city_id) REFERENCES city(city_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Hotel Table Create
@@ -42,7 +50,6 @@ CREATE TABLE IF NOT EXISTS hotel (
     city_id INT,
     hotel_name VARCHAR(50) NOT NULL,
     price INT,
-    temperature INT,
     accomodation_number INT,
     CONSTRAINT hotel_ibfk_1 FOREIGN KEY (city_id) REFERENCES city(city_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -62,15 +69,15 @@ CREATE TABLE IF NOT EXISTS transportation
 -- Restaurant Table Create
 CREATE TABLE IF NOT EXISTS restaurant
 (
-     restaurant_id INT NOT NULL,
+     restaurant_id INT NOT NULL PRIMARY KEY,
      country_id INT NOT NULL,
      restaurant_name CHAR(50),
      cuisine_type CHAR(50),
 		 address CHAR(50),
-     PRIMARY KEY(restaurant_id),
+     city_id INT NOT NULL,
+     FOREIGN KEY (city_id) REFERENCES city(city_id),
      FOREIGN KEY(country_id) REFERENCES country(country_id)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
--- city_id에서 country_id로 변경했습니다
+);
 
 -- expense Table Create 
 CREATE TABLE IF NOT EXISTS expense (
@@ -90,7 +97,7 @@ FOREIGN KEY (hotel_id) REFERENCES hotel(hotel_id)
 
 -- Restaurant Rating Table Create
 CREATE TABLE IF NOT EXISTS restaurant_rating (
-restaurant_rating_id INT AUTO_INCREMRIMAR PRIMARY KEY,
+restaurant_rating_id INT AUTO_INCREMENT PRIMARY KEY,
 restaurant_id INT,
 restaurant_rating DECIMAL(3, 1),
 restaurant_review TEXT,
@@ -109,7 +116,7 @@ FOREIGN KEY (city_id) REFERENCES city(city_id)
 CREATE TABLE IF NOT EXISTS souvenir (
 souvenir_id INT AUTO_INCREMENT PRIMARY KEY,
 souvenir_name VARCHAR(50) NOT NULL,
-city_id INT FOREIGN KEY,
+city_id INT,
 price INT,
 sale INT,
 CONSTRAINT souvenir_ibfk_1 FOREIGN KEY (city_id) REFERENCES city(city_id)

@@ -1,0 +1,32 @@
+//search
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Country</title>
+</head>
+<body>
+
+<form action="" method="get">
+    <label for="country">Select Country:</label>
+    <select name="country_name" id="country">
+        <!-- Include PHP code to populate the dropdown with country names -->
+        <?php
+        // Add your PHP code here to fetch and display country names
+        ?>
+    </select>
+    <input type="submit" value="Show Information">
+</form>
+
+<script>
+    // JavaScript code to display exchange rate and language information
+    <?php
+    if (isset($exchange_rate) && isset($language_name)) {
+        echo "alert('환율: $exchange_rate 언어: $language_name');";
+    }
+    ?>
+</script>
+
+</body>
+</html>
