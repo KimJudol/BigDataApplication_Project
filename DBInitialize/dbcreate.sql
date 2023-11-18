@@ -97,7 +97,7 @@ FOREIGN KEY (hotel_id) REFERENCES hotel(hotel_id)
 
 -- Restaurant Rating Table Create
 CREATE TABLE IF NOT EXISTS restaurant_rating (
-restaurant_rating_id INT AUTO_INCREMRIMAR PRIMARY KEY,
+restaurant_rating_id INT AUTO_INCREMENT PRIMARY KEY,
 restaurant_id INT,
 restaurant_rating DECIMAL(3, 1),
 restaurant_review TEXT,
@@ -116,7 +116,7 @@ FOREIGN KEY (city_id) REFERENCES city(city_id)
 CREATE TABLE IF NOT EXISTS souvenir (
 souvenir_id INT AUTO_INCREMENT PRIMARY KEY,
 souvenir_name VARCHAR(50) NOT NULL,
-city_id INT FOREIGN KEY,
+city_id INT,
 price INT,
 sale INT,
 CONSTRAINT souvenir_ibfk_1 FOREIGN KEY (city_id) REFERENCES city(city_id)
