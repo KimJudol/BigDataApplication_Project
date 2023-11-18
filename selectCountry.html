@@ -7,40 +7,39 @@
 </head>
 <body>
 
-<form action="" method="get">
-    <label for="country">Select Country:</label>
-    <select name="country_name" id="country">
-        <option value="" selected disabled>Select a country</option>
-        <option value="France">France</option>
-        <option value="Czech Republic">Czech Republic</option>
-        <option value="Swiss">Swiss</option>
-        <option value="UK">UK</option>
-        <option value="Italia">Italia</option>
-    </select>
-    <input type="submit" value="Submit">
-</form>
+    <form action="" method="get" onsubmit="selectCountry(); return false;">
+        <label for="country">Select Country:</label>
+        <select name="country_name" id="country">
+            <option value="" selected disabled>Select a country</option>
+            <option value="France">France</option>
+            <option value="Czech Republic">Czech Republic</option>
+            <option value="Swiss">Swiss</option>
+            <option value="UK">UK</option>
+            <option value="Italia">Italia</option>
+        </select>
+        <input type="submit" value="Submit">
+    </form>
 
+    <script>
+        function selectCountry() {
+            var country = document.getElementById("country");
+            var country_name = country.options[country.selectedIndex].value;
 
-<script>
-    function selectCountry(){
-        var country = document.getElementById("country");
-        var country_name = country.options[country.selectedIndex].value;
-        if(country_name == "France"){
-            alert("France's exchange rate is 1405.42 and language is 프랑스어");
-        }else if(country_name == "Czech Republic"){
-            alert("Czech Republic's exchange rate is 57.58 and language is 체코어, 실레시아어");
-        }else if(country_name == "Swiss"){
-            alert("Swiss's exchange rate is 1456.09 and language is 독일어");
-        }else if(country_name == "UK"){
-            alert("UK's exchange rate is 1620.10 and language is 영어");
-        }else if(country_name == "Italia"){
-            alert("Italia's exchange rate is 1405.42 and language is 이탈리아어");
-        }else{
-            alert("Please select a country");
+            if (country_name == "France") {
+                alert("France's exchange rate is 1405.42 and language is 프랑스어");
+            } else if (country_name == "Czech Republic") {
+                alert("Czech Republic's exchange rate is 57.58 and language is 체코어, 실레시아어");
+            } else if (country_name == "Swiss") {
+                alert("Swiss's exchange rate is 1456.09 and language is 독일어");
+            } else if (country_name == "UK") {
+                alert("UK's exchange rate is 1620.10 and language is 영어");
+            } else if (country_name == "Italia") {
+                alert("Italia's exchange rate is 1405.42 and language is 이탈리아어");
+            } else {
+                alert("Please select a country");
+            }
         }
-    }
-    selectCountry();
-</script>
+    </script>
 
-         
-
+</body>
+</html>
