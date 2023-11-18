@@ -21,7 +21,7 @@
             h.hotel_name, 
             h.price, 
             h.accomodation_number, 
-            hd.hotel_discount_Id, 
+            hd.hotel_discount_id, 
             hd.hotel_discount_available, 
             hd.hotel_discount_rate, 
             hd.hotel_discount_period
@@ -59,7 +59,7 @@
                     <td>" . $row["hotel_name"] . "</td>
                     <td>" . $row["price"] . "</td>
                     <td>" . $row["accomodation_number"] . "</td>
-                    <td>" . $row["hotel_discount_Id"] . "</td>
+                    <td>" . $row["hotel_discount_id"] . "</td>
                     <td>" . $row["hotel_discount_available"] . "</td>
                     <td>" . $row["hotel_discount_rate"] . "</td>
                     <td>" . $row["hotel_discount_period"] . "</td>
