@@ -21,6 +21,9 @@ Select ID to Delete<br>
 <button onclick="history.back()">Back</button>
 <?php
 
+error_reporting(0);
+
+
 // Connect to the database
 $mysqli = mysqli_connect("localhost", "team18", "team18", "team18");
 
