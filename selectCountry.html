@@ -37,32 +37,52 @@
         <input type="submit" value="Submit">
     </form>
 
+    <div>
+        <label for="country">Select a country:</label>
+        <select id="country" onchange="selectCountry()">
+            <!-- Populate this dropdown with country options from your database -->
+            <option value="France">France</option>
+            <option value="Czech Republic">Czech Republic</option>
+            <option value="Swiss">Swiss</option>
+            <option value="UK">UK</option>
+            <option value="Italia">Italia</option>
+        </select>
+    </div>
+    
     <div id="countryInfo"></div>
-
+    
     <script>
         function selectCountry() {
             var country = document.getElementById("country");
             var country_name = country.options[country.selectedIndex].value;
-
-            var countryInfoDiv = document.getElementById("countryInfo");
-
-            if (country_name == "France") {
-                countryInfoDiv.innerHTML = "<table><tr><th>France</th></tr><tr><td>Exchange rate: 1405.42</td></tr><tr><td>Language: 프랑스어</td></tr></table>";
-            } else if (country_name == "Czech Republic") {
-                countryInfoDiv.innerHTML = "<table><tr><th>Czech Republic</th></tr><tr><td>Exchange rate: 57.58</td></tr><tr><td>Language: 체코어, 실레시아어</td></tr></table>";
-            } else if (country_name == "Swiss") {
-                countryInfoDiv.innerHTML = "<table><tr><th>Swiss</th></tr><tr><td>Exchange rate: 1456.09</td></tr><tr><td>Language: 독일어</td></tr></table>";
-            } else if (country_name == "UK") {
-                countryInfoDiv.innerHTML = "<table><tr><th>UK</th></tr><tr><td>Exchange rate: 1620.10</td></tr><tr><td>Language: 영어</td></tr></table>";
-            } else if (country_name == "Italia") {
-                countryInfoDiv.innerHTML = "<table><tr><th>Italia</th></tr><tr><td>Exchange rate: 1405.42</td></tr><tr><td>Language: 이탈리아어</td></tr></table>";
-            } else {
-                countryInfoDiv.innerHTML = "<p>Please select a country</p>";
-            }
+    
+            // AJAX 요청
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    // 응답 데이터를 JSON으로 파싱
+                    var countryInfo = JSON.parse(this.responseText);
+    
+                    // 결과를 HTML로 업데이트
+                    var countryInfoDiv = document.getElementById("countryInfo");
+                    countryInfoDiv.innerHTML = "<table><tr><th>" + country_name + "</th></tr><tr><td>Exchange rate: " +
+                        countryInfo.exchange_rate + "</td></tr><tr><td>Language: " + countryInfo.language_name + "</td></tr></table>";
+                }
+            };
+            xhr.open("GET", "country_info.php?country_name=" + country_name, true);
+            xhr.send();
         }
     </script>
-
-    <button onclick="history.back()">Back</button>
+    <button onclick="goBack()">Go Back</button>
+    
+    <script>
+        function goBack() {
+            history.back();
+        }
+    </script>
+    
 
 </body>
 </html>
+
+
