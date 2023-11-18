@@ -57,7 +57,7 @@
                         countryInfo.exchange_rate + "</td></tr><tr><td>Language: " + countryInfo.language_name + "</td></tr></table>";
                 }
             };
-            xhr.open("GET", "country_info.php?country_name=" + country_name, true);
+            xhr.open("GET", "selectCountry.php?country_name=" + country_name, true);
             xhr.send();
         }
     </script>
