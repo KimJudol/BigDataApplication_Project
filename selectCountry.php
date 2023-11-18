@@ -45,7 +45,15 @@ if ($languageRow = mysqli_fetch_assoc($languageResult)) {
   
    mysqli_close($mysqli);
 } else {
-   echo "Select Country.";
+   echo "Select Country.";  
 }
+
+function goBack() {
+        history.back();
+}
+
+mysqli_close($mysqli);
+
+?>
 
 
