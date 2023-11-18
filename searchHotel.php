@@ -13,7 +13,7 @@ $search = isset($_GET['search']) ? $_GET['search'] : '';
 $search = mysqli_real_escape_string($mysqli, $search);
 
 // 검색 결과를 가져오는 쿼리
-$sql = "SELECT hotel.hotel_id, hotel.hotel_name, hotel.price, hotel.capacity, hotel_discount.discount_id, hotel_discount.discount_status, hotel_discount.discount_amount, hotel_discount.validity_period
+$sql = "SELECT hotel.hotel_id, hotel.hotel_name, hotel.price, hotel.accomodation_number, hotel_discount.discount_id, hotel_discount.discount_status, hotel_discount.discount_amount, hotel_discount.validity_period
         FROM hotel
         LEFT JOIN hotel_discount ON hotel.hotel_id = hotel_discount.hotel_id
         WHERE hotel.hotel_name LIKE '%$search%'
@@ -71,7 +71,7 @@ $res = mysqli_query($mysqli, $sql);
                     <td><?php echo $row['hotel_id']; ?></td>
                     <td><?php echo $row['hotel_name']; ?></td>
                     <td><?php echo $row['price']; ?></td>
-                    <td><?php echo $row['capacity']; ?></td>
+                    <td><?php echo $row['accomodation_number']; ?></td>
                     <td><?php echo $row['discount_status']; ?></td>
                     <td><?php echo $row['discount_amount']; ?></td>
                     <td><?php echo $row['validity_period']; ?></td>

@@ -213,6 +213,10 @@ if (isset($_GET['city_name']) || isset($_GET['country_name'])) {
 
     <input type="button" value="Submit" onclick="showRestaurantInfo()">
 
+    <br><br><a href="/team18/getRestaurantReviews.php" target="_blank">
+        <button>Restaurant Review</button>
+    </a><br>
+
     <!-- Display Restaurant Information -->
     <div id="restaurantInfo"></div>
     </body>
