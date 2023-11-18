@@ -667,9 +667,9 @@ VALUES
     (71, 71, 3.7),
     (72, 72, 2.6);
 
-INSERT INTO `users` (`id`, `password`) VALUES
+INSERT INTO users (id, password) VALUES
 ('team18', 'team18');
 
-ALTER TABLE `users`
-  ADD UNIQUE KEY `ID` (`id`) USING HASH;
+ALTER TABLE users
+  ADD UNIQUE KEY ID (id) USING HASH;
 COMMIT;
