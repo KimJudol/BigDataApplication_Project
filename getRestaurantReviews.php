@@ -1,12 +1,8 @@
 <?php
-$servername = "localhost";      
-$username = "localhost";      
-$dbname = "test";   
-
 // Database Connection
-$connect = new mysqli($servername, $username, $password, $dbname);
+$mysqli = mysqli_connect("localhost", "team18", "team18", "team18");
 
-if (!$connect) {
+if (!$mysqli) {
     die("연결 실패: " . mysqli_connect_error());
 }
 
@@ -18,7 +14,7 @@ if (isset($_GET['restaurant_id'])) {
                         FROM restaurant_rating 
                         WHERE restaurant_id = $restaurantId";
 
-    $result = mysqli_query($connect, $getReviewsQuery);
+    $result = mysqli_query($mysqli, $getReviewsQuery);
 
     if ($result) {
         echo "<h2>리뷰 목록</h2>";
@@ -33,5 +29,5 @@ if (isset($_GET['restaurant_id'])) {
         echo "리뷰를 가져오는 데 실패했습니다.";
     }
 }
-mysqli_close($connect);
+mysqli_close($mysqli);
 ?>
