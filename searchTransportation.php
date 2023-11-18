@@ -1,12 +1,7 @@
 <?php
-$hostname = "localhost:3306";
-$username = "root";
-$password = "";
-$databaseName = "team18";
+$mysqli = mysqli_connect("localhost", "team18", "team18", "team18");
 
-$connect = mysqli_connect($hostname, $username, $password, $databaseName);
-
-if (!$connect) {
+if (!$mysqli) {
     die("연결 실패: " . mysqli_connect_error());
 }
 
@@ -18,7 +13,7 @@ if (isset($_GET['city_name'])) {
     $findCountryIdQuery = "SELECT country_id 
                            FROM country 
                            WHERE country_name = '$city_name'";
-    $resultCountryId = mysqli_query($connect, $findCountryIdQuery);
+    $resultCountryId = mysqli_query($mysqli, $findCountryIdQuery);
 
     if ($row = mysqli_fetch_assoc($resultCountryId)) {
         $countryId = $row['country_id'];
@@ -27,7 +22,7 @@ if (isset($_GET['city_name'])) {
         $getTransportationInfoQuery = "SELECT method, price
                                        FROM transportation 
                                        WHERE country_id = '$countryId'";
-        $resultTransportationInfo = mysqli_query($connect, $getTransportationInfoQuery);
+        $resultTransportationInfo = mysqli_query($mysqli, $getTransportationInfoQuery);
 
         if (mysqli_num_rows($resultTransportationInfo) > 0) {
             echo "<h1>$city_name 교통수단 가격</h1>";
@@ -47,7 +42,7 @@ if (isset($_GET['city_name'])) {
             $getCheapestTransportationQuery = "SELECT method, MIN(price) as min_price
                                                FROM transportation 
                                                WHERE country_id = '$countryId'";
-            $resultCheapestTransportation = mysqli_query($connect, $getCheapestTransportationQuery);
+            $resultCheapestTransportation = mysqli_query($mysqli, $getCheapestTransportationQuery);
 
             if ($cheapestTransportation = mysqli_fetch_assoc($resultCheapestTransportation)) {
                 echo "<br>가장 저렴한 교통수단: " . $cheapestTransportation['method'] . " (가격: " . $cheapestTransportation['min_price'] . ")<br>";
@@ -61,14 +56,14 @@ if (isset($_GET['city_name'])) {
         echo "<h2>선택한 도시의 정보를 찾을 수 없습니다.</h2>";
     }
 
-    mysqli_close($connect);
+    mysqli_close($mysqli);
 } else {
     // 국가 목록을 가져오는 쿼리
     $query = "SELECT * FROM country";
-    $result1 = mysqli_query($connect, $query);
+    $result1 = mysqli_query($mysqli, $query);
 
     if (!$result1) {
-        die("쿼리 실행에 실패했습니다: " . mysqli_error($connect));
+        die("쿼리 실행에 실패했습니다: " . mysqli_error($mysqli));
     }
 
     // HTML

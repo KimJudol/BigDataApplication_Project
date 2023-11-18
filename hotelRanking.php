@@ -1,15 +1,10 @@
 <?php
-// 데이터베이스 연결 정보
-$servername = "localhost";       // MySQL 서버 주소
-$username = "localhost";       // MySQL 사용자 이름
-$dbname = "test";    // 사용할 데이터베이스 이름
-
 // MySQL 데이터베이스에 연결
-$conn = new mysqli($servername, $username, $password, $dbname);
+$mysqli = new mysqli("localhost", "team18", "team18", "team18");
 
 // 연결 오류 확인
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if ($mysqli->connect_error) {
+    die("Connection failed: " . $mysqli->connect_error);
 }
 
 // 호텔 랭킹을 가져오는 쿼리
@@ -17,7 +12,7 @@ $sql = "SELECT hotel.hotel_name, hotel_rating.hotel_rating FROM hotel
         INNER JOIN hotel_rating ON hotel.hotel_id = hotel_rating.hotel_id
         ORDER BY hotel_rating DESC";
 
-$result = $conn->query($sql);
+$result = $mysqli->query($sql);
 
 ?>
 
@@ -75,7 +70,7 @@ $result = $conn->query($sql);
 
     <?php
     // 데이터베이스 연결 종료
-    $conn->close();
+    $mysqli->close();
     ?>
 
 </body>

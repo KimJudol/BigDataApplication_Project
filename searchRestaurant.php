@@ -1,13 +1,8 @@
 <?php
-$hostname = "localhost:3306";
-$username = "root";
-$password = "";
-$databaseName = "team18";
-
 // Database Connection
-$connect = mysqli_connect($hostname, $username, $password, $databaseName);
+$mysqli = mysqli_connect("localhost", "team18", "team18", "team18");
 
-if (!$connect) {
+if (!$mysqli) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
@@ -18,7 +13,7 @@ if (isset($_GET['city_name']) || isset($_GET['country_name'])) {
 
         // Find city_id for the selected city
         $findCityQuery = "SELECT city_id FROM city WHERE city_name = '$city_name'";
-        $cityResult = mysqli_query($connect, $findCityQuery);
+        $cityResult = mysqli_query($mysqli, $findCityQuery);
 
         if ($cityRow = mysqli_fetch_assoc($cityResult)) {
             $city_id = $cityRow['city_id'];
@@ -30,7 +25,7 @@ if (isset($_GET['city_name']) || isset($_GET['country_name'])) {
                                     LEFT JOIN restaurant_discount rd ON r.restaurant_id = rd.restaurant_id
                                     WHERE r.city_id = $city_id";
 
-            $result = mysqli_query($connect, $findRestaurantQuery);
+            $result = mysqli_query($mysqli, $findRestaurantQuery);
 
             if ($row = mysqli_fetch_assoc($result)) {
                 $countryName = $row['country_name'];
@@ -65,7 +60,7 @@ if (isset($_GET['city_name']) || isset($_GET['country_name'])) {
                                 WHERE c.country_name = '$country_name'
                                 GROUP BY r.restaurant_id, r.restaurant_name, r.cuisine_type, r.address, c.country_name";
 
-        $countryResult = mysqli_query($connect, $findCountryRestaurantQuery);
+        $countryResult = mysqli_query($mysqli, $findCountryRestaurantQuery);
 
         if ($countryRow = mysqli_fetch_assoc($countryResult)) {
             echo "<h1>$country_name Restaurant List</h1>";
@@ -88,14 +83,14 @@ if (isset($_GET['city_name']) || isset($_GET['country_name'])) {
     }
 
     // Close the database connection
-    mysqli_close($connect);
+    mysqli_close($mysqli);
 } else {
     // Get the list of countries
     $query = "SELECT * FROM country";
-    $result1 = mysqli_query($connect, $query);
+    $result1 = mysqli_query($mysqli, $query);
 
     if (!$result1) {
-        die("Query failed: " . mysqli_error($connect));
+        die("Query failed: " . mysqli_error($mysqli));
     }
 
     // HTML
