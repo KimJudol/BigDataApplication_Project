@@ -142,7 +142,7 @@ CREATE TABLE IF NOT EXISTS restaurant_discount (
 
 -- Hotel Discount Table Create
 CREATE TABLE IF NOT EXISTS hotel_discount (
-    hotel_discount_Id INT PRIMARY KEY,
+    hotel_discount_id INT PRIMARY KEY,
     hotel_id INT,
     hotel_discount_available BOOLEAN,
     hotel_discount_rate INT,
