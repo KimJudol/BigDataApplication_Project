@@ -10,21 +10,23 @@
 <form action="" method="get">
     <label for="country">Select Country:</label>
     <select name="country_name" id="country">
-        <!-- Include PHP code to populate the dropdown with country names -->
         <?php
-        // Add your PHP code here to fetch and display country names
+) {
+            echo "<option value=\"$country\">$country</option>";
+        }
         ?>
     </select>
-    <input type="submit" value="Show Information">
+    <input type="submit" value="Show Info">
 </form>
 
 <script>
-    // JavaScript code to display exchange rate and language information
-    <?php
-    if (isset($exchange_rate) && isset($language_name)) {
-        echo "alert('환율: $exchange_rate 언어: $language_name');";
+    // display exchange rate and language information
+    var exchangeRate = "<?php echo isset($exchange_rate) ? $exchange_rate : ''; ?>";
+    var languageName = "<?php echo isset($language_name) ? $language_name : ''; ?>";
+
+    if (exchangeRate !== '' && languageName !== '') {
+        alert('Exchange Rate: ' + exchangeRate + ' Language: ' + languageName);
     }
-    ?>
 </script>
 
 </body>
