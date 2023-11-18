@@ -219,7 +219,7 @@ VALUES
      (37, 4, 'K-Food', '한식', '111 Portland, Manchester, W1W 6QQ, United Kingdom',9),
      (38, 1, 'Sushi Bar', '일식', '890 Rue du Mont-Cenis, Marseille, 38000, France',1),
      (39, 5, 'Sushi Lounge', '일식', '444 Via Garibaldi, Rome, 80142, Italy',11),
-     (40, 1, 'Delicious Food', '양식', '111 Rue du Temple, Bordeaux, 67000, France',2);
+     (40, 1, 'Delicious Food', '양식', '111 Rue du Temple, Bordeaux, 67000, France',2),
      (41, 1, 'Han Cook', '한식', '100 Rue de la Liberté, Marseille, 75001, France',1),
      (42, 2, 'Delicious Korean Food', '한식', '100 Prague Street, Prague, 110 00, Czech Republic',4),
      (43, 3, 'Mat', '한식', '100 Alpine Street, Zurich, 8001, Switzerland',6),
@@ -230,7 +230,7 @@ VALUES
      (48, 3, 'Sushi', '일식', '444 Lake Geneva Road, Geneva, 1201, Switzerland',7),
      (49, 4, 'Osaka Oasis', '일식', '444 Abbey Road, Manchester, L1 9EE, United Kingdom',9),
      (50, 5, 'Ninja Nosh', '일식', '777 Via Condotti, Rome, 00187, Italy',11),
-     (51, 1, 'Emperor's Feast', '중식', '777 Boulevard Saint-Germain, Caen, 69001, France',3),
+     (51, 1, 'Emperors Feast', '중식', '777 Boulevard Saint-Germain, Caen, 69001, France',3),
      (52, 2, 'Jade Garden Joy', '중식', '777 Brno Boulevard, Prague, 602 00, Czech Republic',4),
      (53, 3, 'CFOOD', '중식', '777 Matterhorn Avenue, Zurich, 3920, Switzerland',6),
      (54, 4, 'Chinese Food', '중식', '777 Baker Street, London, NW1 6XE, United Kingdom',8),
