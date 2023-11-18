@@ -6,7 +6,16 @@ USE team18;
 CREATE TABLE IF NOT EXISTS country (
 	country_id INT AUTO_INCREMENT PRIMARY KEY,
 	country_name VARCHAR(50)
-)
+);    
+
+
+-- City Table Create
+CREATE TABLE IF NOT EXISTS city (
+	city_id INT AUTO_INCREMENT PRIMARY KEY,
+	city_name VARCHAR(50), 
+	country_id INT,
+	CONSTRAINT city_ibfk_1 FOREIGN KEY (country_id) REFERENCES country(country_id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Travel Table Create
 CREATE TABLE IF NOT EXISTS travel (
@@ -23,14 +32,6 @@ CREATE TABLE myTravel (
     travel_id INT PRIMARY KEY,
     FOREIGN KEY (travel_id) REFERENCES travel(travel_id)
 );
-
--- City Table Create
-CREATE TABLE IF NOT EXISTS city (
-	city_id INT AUTO_INCREMENT PRIMARY KEY,
-	city_name VARCHAR(50), 
-	country_id INT,
-	CONSTRAINT city_ibfk_1 FOREIGN KEY (country_id) REFERENCES country(country_id)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Weather Table Create
 CREATE TABLE IF NOT EXISTS weather (
@@ -95,7 +96,7 @@ FOREIGN KEY (hotel_id) REFERENCES hotel(hotel_id)
 
 -- Restaurant Rating Table Create
 CREATE TABLE IF NOT EXISTS restaurant_rating (
-restaurant_rating_id INT AUTO_INCREMRIMAR PRIMARY KEY,
+restaurant_rating_id INT AUTO_INCREMENT PRIMARY KEY,
 restaurant_id INT,
 restaurant_rating DECIMAL(3, 1),
 restaurant_review TEXT,
@@ -114,7 +115,7 @@ FOREIGN KEY (city_id) REFERENCES city(city_id)
 CREATE TABLE IF NOT EXISTS souvenir (
 souvenir_id INT AUTO_INCREMENT PRIMARY KEY,
 souvenir_name VARCHAR(50) NOT NULL,
-city_id INT FOREIGN KEY,
+city_id INT,
 price INT,
 sale INT,
 CONSTRAINT souvenir_ibfk_1 FOREIGN KEY (city_id) REFERENCES city(city_id)
