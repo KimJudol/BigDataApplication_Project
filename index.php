@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>searchRestaurant</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .icon {
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .title {
+            margin-top: 20px;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        button {
+            font-size: 18px;
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <form method="get" action="searchWeather.php">
+		<input class=textform type=text name=search id="search_box" autocomplete="off" placeholder="도시를 입력하세요." required>
+		<input class=submit type=submit value=검색>
+	</form> 
+	
+
+</body>
+</html>
