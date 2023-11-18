@@ -90,6 +90,7 @@ if ($countries_result->num_rows > 0) {
         $result = $conn->query($query);
 
         if ($result->num_rows > 0) {
+            echo "<h2>Restaurant Information</h2>";
             // Output data in a table
             echo "<table border='1'>";
             echo "<tr><th>Restaurant Name</th><th>Cuisine Type</th><th>Address</th><th>Discount Rate</th><th>Review</th></tr>";
@@ -106,6 +107,8 @@ if ($countries_result->num_rows > 0) {
             }
 
             echo "</table>";
+
+            echo "<br><a href='/team18/search.html'><button>Back</button></a>";
         } else {
             echo "No results found for the selected country and city.";
         }
