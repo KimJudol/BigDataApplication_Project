@@ -57,9 +57,7 @@ if ($result->num_rows > 0) {
 echo "</table>";
 
 
-echo "<br><br><a href='/team18/searchHotel.html' target='_blank'>";
-echo "<button>back</button>";
-echo "</a><br>";
+echo "<button onclick="history.back()">Back</button>";
 
 // Close MySQL connection
 $mysqli->close();
