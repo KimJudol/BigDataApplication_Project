@@ -23,9 +23,7 @@ Select City<br>
 <input type="date" name="endDate" size="50">
 <br><br><input type="submit" name="submit" value="Update"> 
 </form>
-<a href="/team18/myTravel.php" target="_blank">
-    <button>Back</button>
-</a><br>
+<button onclick="history.back()">Back</button><br>
 
 <?php
 
@@ -85,6 +83,5 @@ mysqli_free_result($res);
 mysqli_close($mysqli);
 
 ?>
-</body>
 </body>
 </html>
