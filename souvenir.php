@@ -1,21 +1,15 @@
 <?php
-// 데이터베이스 연결 정보
-$servername = "localhost";
-$username = "your_username"; // MySQL 사용자 이름
-$password = "your_password"; // MySQL 비밀번호
-$dbname = "test"; // 사용할 데이터베이스 이름
-
 // MySQL 데이터베이스에 연결
-$conn = new mysqli($servername, $username, $password, $dbname);
+$mysqli = new mysqli("localhost", "team18", "team18", "team18");
 
 // 연결 오류 확인
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if ($mysqli->connect_error) {
+    die("Connection failed: " . $mysqli->connect_error);
 }
 
 // 검색어 처리
 $search = isset($_GET['search']) ? $_GET['search'] : '';
-$search = mysqli_real_escape_string($conn, $search);
+$search = mysqli_real_escape_string($mysqli, $search);
 
 // 검색 결과를 가져오는 쿼리
 $sql = "SELECT souvenir.souvenir_id, souvenir.souvenir_name, souvenir.price, city.city_name
@@ -24,7 +18,7 @@ $sql = "SELECT souvenir.souvenir_id, souvenir.souvenir_name, souvenir.price, cit
         WHERE city.city_name LIKE '%$search%'
         ORDER BY souvenir.souvenir_name";
 
-$res = mysqli_query($conn, $sql);
+$res = mysqli_query($mysqli, $sql);
 
 // 체크박스 선택된 가격 합계 계산
 $totalPrice = 0;

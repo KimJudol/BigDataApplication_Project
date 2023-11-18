@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 </head>
 <body>
-
+<h1>My Travel</h1>
 <a href="/team18/insertTravel.html" target="_blank">
         <button>Insert Travel</button>
     </a><br>
@@ -15,7 +15,7 @@
     <a href="/team18/deleteTravel.html" target="_blank">
         <button>Delete Travel</button>
     </a><br>
-    <a href="/team18/searchTravel.html" target="_blank">
+    <a href="/team18/search.html" target="_blank">
         <button>Search</button>
     </a><br>
     <a href="/team18/travel.html" target="_blank">

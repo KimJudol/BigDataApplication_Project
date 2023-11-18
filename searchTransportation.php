@@ -1,14 +1,9 @@
 <?php
-$servername = "localhost";      
-$username = "localhost";      
-$dbname = "test";   
 
-// Database Connection
-$connect = new mysqli($servername, $username, $password, $dbname);
+$mysqli = mysqli_connect("localhost", "team18", "team18", "team18");
 
-// Check if the connection is successful
-if (!$connect) {
-    die("Connection failed: " . mysqli_connect_error());
+if (!$mysqli) {
+    die("연결 실패: " . mysqli_connect_error());
 }
 
 // Check if the city_name is set in the GET parameters
@@ -19,7 +14,7 @@ if (isset($_GET['city_name'])) {
     $findCountryIdQuery = "SELECT country_id 
                            FROM country 
                            WHERE country_name = '$city_name'";
-    $resultCountryId = mysqli_query($connect, $findCountryIdQuery);
+    $resultCountryId = mysqli_query($mysqli, $findCountryIdQuery);
 
     // Check if the country_id is found
     if ($row = mysqli_fetch_assoc($resultCountryId)) {
@@ -29,7 +24,7 @@ if (isset($_GET['city_name'])) {
         $getTransportationInfoQuery = "SELECT method, price
                                        FROM transportation 
                                        WHERE country_id = '$countryId'";
-        $resultTransportationInfo = mysqli_query($connect, $getTransportationInfoQuery);
+        $resultTransportationInfo = mysqli_query($mysqli, $getTransportationInfoQuery);
 
         // Check if there is transportation information available
         if (mysqli_num_rows($resultTransportationInfo) > 0) {
@@ -50,7 +45,7 @@ if (isset($_GET['city_name'])) {
             $getCheapestTransportationQuery = "SELECT method, MIN(price) as min_price
                                                FROM transportation 
                                                WHERE country_id = '$countryId'";
-            $resultCheapestTransportation = mysqli_query($connect, $getCheapestTransportationQuery);
+            $resultCheapestTransportation = mysqli_query($mysqli, $getCheapestTransportationQuery);
 
             // Display information about the cheapest transportation method
             if ($cheapestTransportation = mysqli_fetch_assoc($resultCheapestTransportation)) {
@@ -65,16 +60,14 @@ if (isset($_GET['city_name'])) {
         echo "<h2>Cannot find information for the selected city.</h2>";
     }
 
-    // Close the database connection
-    mysqli_close($connect);
+    mysqli_close($mysqli);
 } else {
-    // Query to get the list of countries
+    // 국가 목록을 가져오는 쿼리
     $query = "SELECT * FROM country";
-    $result1 = mysqli_query($connect, $query);
+    $result1 = mysqli_query($mysqli, $query);
 
-    // Check if the query execution is successful
     if (!$result1) {
-        die("Query failed: " . mysqli_error($connect));
+        die("쿼리 실행에 실패했습니다: " . mysqli_error($mysqli));
     }
 
     // HTML for the front end

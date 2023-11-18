@@ -2,7 +2,7 @@
 <?php
 
 // Connect to the database
-$mysqli = mysqli_connect("localhost", "team18", "team18", "Team18");
+$mysqli = mysqli_connect("localhost", "team18", "team18", "team18");
 
 // Check if the connection was successful
 if ($mysqli === false) {

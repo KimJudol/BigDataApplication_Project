@@ -1,12 +1,8 @@
 <?php
-$servername = "localhost";      
-$username = "localhost";      
-$dbname = "test";   
 
-// Database Connection
-$connect = new mysqli($servername, $username, $password, $dbname);
+$mysqli = mysqli_connect("localhost", "team18", "team18", "team18");
 
-if (!$connect) {
+if (!$mysqli) {
     die("연결 실패: " . mysqli_connect_error());
 }
 
@@ -18,7 +14,7 @@ if (isset($_GET['country_name'])) {
                        FROM city 
                        WHERE country_id = (SELECT country_id FROM country WHERE country_name = '$country_name')";
 
-    $result = mysqli_query($connect, $getCitiesQuery);
+    $result = mysqli_query($mysqli, $getCitiesQuery);
 
     if ($result) {
         while ($row = mysqli_fetch_array($result)) {
@@ -28,7 +24,7 @@ if (isset($_GET['country_name'])) {
         echo "도시를 불러올 수 없습니다.";
     }
 
-    mysqli_close($connect);
+    mysqli_close($mysqli);
 } else {
     echo "국가를 선택하세요.";
 }
