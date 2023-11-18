@@ -6,8 +6,7 @@ USE team18;
 CREATE TABLE IF NOT EXISTS country (
 	country_id INT AUTO_INCREMENT PRIMARY KEY,
 	country_name VARCHAR(50)
-);    
-
+);
 
 -- City Table Create
 CREATE TABLE IF NOT EXISTS city (
@@ -33,6 +32,8 @@ CREATE TABLE myTravel (
     FOREIGN KEY (travel_id) REFERENCES travel(travel_id)
 );
 
+
+
 -- Weather Table Create
 CREATE TABLE IF NOT EXISTS weather (
     weather_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -40,7 +41,7 @@ CREATE TABLE IF NOT EXISTS weather (
     date DATE NOT NULL,
     temperature INT,
     conditions VARCHAR(50),
-    CONSTRAINT weather_ibfk_1FOREIGN KEY (city_id) REFERENCES city(city_id)
+    CONSTRAINT weather_ibfk_1 FOREIGN KEY (city_id) REFERENCES city(city_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Hotel Table Create
@@ -68,15 +69,15 @@ CREATE TABLE IF NOT EXISTS transportation
 -- Restaurant Table Create
 CREATE TABLE IF NOT EXISTS restaurant
 (
-     restaurant_id INT NOT NULL,
+     restaurant_id INT NOT NULL PRIMARY KEY,
      country_id INT NOT NULL,
      restaurant_name CHAR(50),
      cuisine_type CHAR(50),
 		 address CHAR(50),
-     PRIMARY KEY(restaurant_id),
+     city_id INT NOT NULL,
+     FOREIGN KEY (city_id) REFERENCES city(city_id),
      FOREIGN KEY(country_id) REFERENCES country(country_id)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
--- city_id에서 country_id로 변경했습니다
+);
 
 -- expense Table Create 
 CREATE TABLE IF NOT EXISTS expense (

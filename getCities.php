@@ -10,7 +10,9 @@ if (isset($_GET['country_name'])) {
     $country_name = $_GET['country_name'];
 
     // Query to get cities for the selected country
-    $getCitiesQuery = "SELECT city_name FROM city WHERE country_id = (SELECT country_id FROM country WHERE country_name = '$country_name')";
+    $getCitiesQuery = "SELECT city_name 
+                       FROM city 
+                       WHERE country_id = (SELECT country_id FROM country WHERE country_name = '$country_name')";
 
     $result = mysqli_query($mysqli, $getCitiesQuery);
 

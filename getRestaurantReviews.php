@@ -1,10 +1,10 @@
 <?php
-$hostname = "localhost:3306";
-$username = "root";
-$password = "";
-$databaseName = "team18";
+$servername = "localhost";      
+$username = "localhost";      
+$dbname = "test";   
 
-$connect = mysqli_connect($hostname, $username, $password, $databaseName);
+// Database Connection
+$connect = new mysqli($servername, $username, $password, $dbname);
 
 if (!$connect) {
     die("연결 실패: " . mysqli_connect_error());
@@ -14,7 +14,9 @@ if (isset($_GET['restaurant_id'])) {
     $restaurantId = $_GET['restaurant_id'];
 
     // Query to get reviews for the specified restaurant
-    $getReviewsQuery = "SELECT restaurant_review FROM restaurant_rating WHERE restaurant_id = $restaurantId";
+    $getReviewsQuery = "SELECT restaurant_review 
+                        FROM restaurant_rating 
+                        WHERE restaurant_id = $restaurantId";
 
     $result = mysqli_query($connect, $getReviewsQuery);
 
