@@ -5,9 +5,7 @@
 <meta charset="UTF-8">
 </head>
 <body>
-    <a href="/team18/search.html" target="_blank">
-        <button>Back</button>
-    </a><br>
+   <button onclick="history.back()">Back</button>
     <?php include("expenseQuery.php"); ?>
 </body>
 </html>
