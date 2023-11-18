@@ -1,11 +1,10 @@
 <?php
-$hostname = "localhost:3306";
-$username = "root";
-$password = "";
-$databaseName = "team18";
+$servername = "localhost";      
+$username = "localhost";      
+$dbname = "test";   
 
 // Database Connection
-$connect = mysqli_connect($hostname, $username, $password, $databaseName);
+$connect = new mysqli($servername, $username, $password, $dbname);
 
 if (!$connect) {
     die("Connection failed: " . mysqli_connect_error());
