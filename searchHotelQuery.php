@@ -69,9 +69,7 @@
     // HTML 테이블 종료
     echo "</table>";
 
-    echo "<br><br><a href='/team18/searchHotel.html' target='_blank'>";
-    echo "<button>back</button>";
-    echo "</a><br>";
+    echo "<button onclick='history.back()'>Back</button>";
 
     // MySQL 연결 종료
     $mysqli->close();
