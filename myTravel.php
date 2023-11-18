@@ -21,9 +21,6 @@
     <a href="/team18/travel.html" target="_blank">
         <button>Show All Travel</button>
     </a><br>
-    <a href="/team18/expense.html" target="_blank">
-        <button>Show Expense</button>
-    </a><br>
 <?php
 
 // Connect to the database
