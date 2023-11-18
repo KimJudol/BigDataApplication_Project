@@ -23,29 +23,10 @@ $result = $mysqli->query($sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurant Ranking</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-        table {
-            width: 50%;
-            margin: 20px auto;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 10px;
-            border: 1px solid #ddd;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
 </head>
 <body>
 
     <div>
-        <a href="ranking.php" class="icon">🏠</a>
         <h1>Restaurant Ranking</h1>
     </div>
     <table>
@@ -73,6 +54,8 @@ $result = $mysqli->query($sql);
     // 데이터베이스 연결 종료
     $mysqli->close();
     ?>
-
+ <br><a href="/team18/ranking.html" target="_blank">
+        <button>Back</button>
+    </a><br>
 </body>
 </html>
