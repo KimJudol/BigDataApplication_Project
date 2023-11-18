@@ -1,4 +1,3 @@
-//Purpose: Displays the exchange rate and language of the selected country
 <?php
 // Connect to database
 $mysqli = mysqli_connect("localhost", "team18", "team18", "team18");
