@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS weather (
     date DATE NOT NULL,
     temperature INT,
     conditions VARCHAR(50),
-    CONSTRAINT weather_ibfk_1FOREIGN KEY (city_id) REFERENCES city(city_id)
+    CONSTRAINT weather_ibfk_1 FOREIGN KEY (city_id) REFERENCES city(city_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Hotel Table Create
