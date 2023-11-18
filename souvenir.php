@@ -18,21 +18,14 @@ $search = isset($_GET['search']) ? $_GET['search'] : '';
 $search = mysqli_real_escape_string($conn, $search);
 
 // 검색 결과를 가져오는 쿼리
-$sql = "SELECT souvenir.souvenir_id, souvenir.souvenir_name, souvenir.price, city.city_name
+$sql = "SELECT city.city_name, souvenir.souvenir_id, souvenir.souvenir_name, 
+               SUM(souvenir.price) AS total_price
         FROM souvenir
         INNER JOIN city ON souvenir.city_id = city.city_id
         WHERE city.city_name LIKE '%$search%'
-        ORDER BY souvenir.souvenir_name";
+        GROUP BY city.city_name, souvenir.souvenir_id WITH ROLLUP";
 
 $res = mysqli_query($conn, $sql);
-
-// 체크박스 선택된 가격 합계 계산
-$totalPrice = 0;
-if (isset($_POST['selectedSouvenirs'])) {
-    foreach ($_POST['selectedSouvenirs'] as $selectedSouvenir) {
-        $totalPrice += $selectedSouvenir;
-    }
-}
 ?>
 
 <!DOCTYPE html>
@@ -66,11 +59,10 @@ if (isset($_POST['selectedSouvenirs'])) {
     <table style="width:1000px;" class="middle">
         <thead>
             <tr align="center">
+                <th width="150">City</th>
                 <th width="70">Souvenir ID</th>
                 <th width="300">Souvenir Name</th>
-                <th width="120">Price</th>
-                <th width="150">City</th>
-                <th width="150">Select</th>
+                <th width="120">Total Price</th>
             </tr>
         </thead>
         <tbody>
@@ -78,11 +70,10 @@ if (isset($_POST['selectedSouvenirs'])) {
             while ($row = mysqli_fetch_assoc($res)) {
             ?>
                 <tr align="center">
+                    <td><?php echo $row['city_name']; ?></td>
                     <td><?php echo $row['souvenir_id']; ?></td>
                     <td><?php echo $row['souvenir_name']; ?></td>
-                    <td><?php echo $row['price']; ?></td>
-                    <td><?php echo $row['city_name']; ?></td>
-                    <td><input type="checkbox" name="selectedSouvenirs[]" value="<?php echo $row['price']; ?>"></td>
+                    <td><?php echo isset($row['total_price']) ? $row['total_price'] : 'Grand Total'; ?></td>
                 </tr>
             <?php
             }
@@ -95,14 +86,6 @@ if (isset($_POST['selectedSouvenirs'])) {
             <label for="search_box">Search:</label>
             <input type="text" id="search_box" name="search" placeholder="Enter city name" value="<?= $search ?>">
             <input type="submit" value="Search">
-        </form>
-    </div>
-
-    <div>
-        <form method="post" action="">
-            <label for="totalPrice">Total Price:</label>
-            <input type="text" id="totalPrice" name="totalPrice" value="<?= $totalPrice ?>" readonly>
-            <input type="submit" value="Calculate Total Price">
         </form>
     </div>
 </body>
