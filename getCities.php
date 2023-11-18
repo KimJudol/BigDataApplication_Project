@@ -1,10 +1,10 @@
 <?php
-$hostname = "localhost:3306";
-$username = "root";
-$password = "";
-$databaseName = "team18";
+$servername = "localhost";      
+$username = "localhost";      
+$dbname = "test";   
 
-$connect = mysqli_connect($hostname, $username, $password, $databaseName);
+// Database Connection
+$connect = new mysqli($servername, $username, $password, $dbname);
 
 if (!$connect) {
     die("연결 실패: " . mysqli_connect_error());
@@ -14,7 +14,9 @@ if (isset($_GET['country_name'])) {
     $country_name = $_GET['country_name'];
 
     // Query to get cities for the selected country
-    $getCitiesQuery = "SELECT city_name FROM city WHERE country_id = (SELECT country_id FROM country WHERE country_name = '$country_name')";
+    $getCitiesQuery = "SELECT city_name 
+                       FROM city 
+                       WHERE country_id = (SELECT country_id FROM country WHERE country_name = '$country_name')";
 
     $result = mysqli_query($connect, $getCitiesQuery);
 
