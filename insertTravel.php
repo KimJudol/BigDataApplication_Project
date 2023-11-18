@@ -23,8 +23,6 @@ Select City<br>
 <input type="date" name="endDate" size="50">
 <br><br><input type="submit" name="submit" value="Submit"> 
 </form>
-<a href="/team18/myTravel.php" target="_blank">
-    <button>Back</button>
-</a><br>
+<button onclick="history.back()">Back</button>
 </body>
 </html>
