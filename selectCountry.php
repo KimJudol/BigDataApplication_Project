@@ -10,22 +10,31 @@ if (!$mysqli) {
 function getCountryInfo($mysqli, $country_name)
 {
     // 국가 이름을 이용하여 국가 ID 가져오기
-    $findCountryQuery = "SELECT country_id FROM country WHERE country_name = '$country_name'";
-    $countryResult = mysqli_query($mysqli, $findCountryQuery);
+    $findCountryQuery = "SELECT country_id FROM country WHERE country_name = ?";
+    $stmt = $mysqli->prepare($findCountryQuery);
+    $stmt->bind_param("s", $country_name);
+    $stmt->execute();
+    $countryResult = $stmt->get_result();
 
     if ($countryRow = mysqli_fetch_assoc($countryResult)) {
         $country_id = $countryRow['country_id'];
 
         // 환율 가져오기
-        $getExchangeRateQuery = "SELECT exchange_rate FROM currency_exchange WHERE country_id = '$country_id'";
-        $exchangeRateResult = mysqli_query($mysqli, $getExchangeRateQuery);
+        $getExchangeRateQuery = "SELECT exchange_rate FROM currency_exchange WHERE country_id = ?";
+        $stmt = $mysqli->prepare($getExchangeRateQuery);
+        $stmt->bind_param("i", $country_id);
+        $stmt->execute();
+        $exchangeRateResult = $stmt->get_result();
 
         if ($exchangeRateRow = mysqli_fetch_assoc($exchangeRateResult)) {
             $exchange_rate = $exchangeRateRow['exchange_rate'];
 
             // 언어 가져오기
-            $getLanguageQuery = "SELECT language_name FROM languages WHERE country_id = '$country_id'";
-            $languageResult = mysqli_query($mysqli, $getLanguageQuery);
+            $getLanguageQuery = "SELECT language_name FROM languages WHERE country_id = ?";
+            $stmt = $mysqli->prepare($getLanguageQuery);
+            $stmt->bind_param("i", $country_id);
+            $stmt->execute();
+            $languageResult = $stmt->get_result();
 
             if ($languageRow = mysqli_fetch_assoc($languageResult)) {
                 $language_name = $languageRow['language_name'];
@@ -53,10 +62,9 @@ if (isset($_GET['country_name'])) {
         // JSON 형식으로 반환
         echo json_encode($countryInfo);
     } else {
-        echo "Data not found";
+        echo json_encode(array('error' => 'Data not found'));
     }
 }
 
 mysqli_close($mysqli);
 ?>
-
