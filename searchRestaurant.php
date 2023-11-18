@@ -125,4 +125,4 @@ if ($countries_result->num_rows > 0) {
 
 // Close connection
 $conn->close();
-?>
+?>s

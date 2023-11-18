@@ -1,5 +1,5 @@
 <?php
-// 데이터베이스 연결
+// 데이터베이스 연결ㅋ
 $mysqli = mysqli_connect("localhost", "team18", "team18", "team18");
 
 if (!$mysqli) {
