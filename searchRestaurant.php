@@ -101,7 +101,7 @@ if ($countries_result->num_rows > 0) {
                 echo "<td>" . $row["restaurant_name"] . "</td>";
                 echo "<td>" . $row["cuisine_type"] . "</td>";
                 echo "<td>" . $row["address"] . "</td>";
-                echo "<td>" . $row["restaurant_discount_rate"] . "</td>";
+                echo "<td>" . $row["restaurant_discount_rate"] . "%"."</td>";
                 echo "<td>" . $row["restaurant_review"] . "</td>";
                 echo "</tr>";
             }
