@@ -34,6 +34,6 @@
             }
         }
     </script>
-  <button onclick="history.back()">Back</button>
+    <button onclick="history.back()">Back</button>
 </body>
 </html>
